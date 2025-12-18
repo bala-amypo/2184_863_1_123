@@ -35,6 +35,4 @@ public class EmployeeSkill{
     public void setActive(Boolean active){
         this.active = active;
     }
-
-
 }
