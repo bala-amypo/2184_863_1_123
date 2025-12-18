@@ -1,1 +1,5 @@
-package com.example.demo.EmployeeSkillRepository;
+package com.example.demo.repository;
+
+public class EmployeeSkillRepository{
+    
+}
