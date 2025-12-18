@@ -67,11 +67,17 @@ public class Employee{
     public void setActive(Boolean active){
         this.active = active;
     }
-    public Timestamp getUpdatedAt(){
-        return active;
+    public Timestamp getCreatedAt(){
+        return createdAt;
     }
-    public void setActive(Boolean active){
-        this.active = active;
+    public void CreatedAt(Timestamp createdAt){
+        this.createdAt = createdAt;
+    }
+    public Timestamp getUpdatedAt(){
+        return createdAt;
+    }
+    public void setUpdatedAt(Timestamp updatedAt){
+        this.updatedAt = updatedAt;
     }
 
 }
