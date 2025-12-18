@@ -28,6 +28,6 @@ public class Employee{
     }
     @PreUpdate
     public void onUpdate(){
-        updatedAt = new 
+        updatedAt = new Timestamp(System.currentTimeMillis());
     }
 }
