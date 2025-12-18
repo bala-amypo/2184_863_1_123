@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import jakarta.presistence.*;
+
 public class EmployeeSkill{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +26,14 @@ public class EmployeeSkill{
     public Integer getYearsOfExperience(){
         return yearsOfExperience;
     }
-    public void setYearsOfExperience(String yearsOfExperience){
-        this.proficiencyLevel = proficiencyLevel;
+    public void setYearsOfExperience(Integer yearsOfExperience){
+        this.yearsOfExperience = yearsOfExperience;
+    }
+    public Boolean getActive(){
+        return active;
+    }
+    public void setActive(Boolean active){
+        this.active = active;
     }
 
 
