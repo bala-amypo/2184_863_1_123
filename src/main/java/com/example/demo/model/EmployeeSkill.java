@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.presistence.*;
+import jakarta.persistence.*;
 
 public class EmployeeSkill{
     @Id
