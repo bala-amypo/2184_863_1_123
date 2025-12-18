@@ -37,11 +37,29 @@ public class Employee{
     public void setId(Long id){
         this.id = id;
     }
-    public String getName(){
+    public Long getFullName(){
         return id;
     }
-    public void setName(String Name){
-        this.name = name;
+    public void setFullName(String fullName){
+        this.fullName = fullName;
+    }
+    public String getEmail(){
+        return email;
+    }
+    public void setEmail(String email){
+        this.category = category;
+    }
+    public String getDescription(){
+        return description;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
+    public Boolean getActive(){
+        return active;
+    }
+    public void setActive(Boolean active){
+        this.active = active;
     }
 
 }
