@@ -14,5 +14,20 @@ public class Employee{
     @Column(unique = true)
     private String email;
 
-    private S
+    private String department;
+    private String jobTitle;
+
+    private Boolean active = true;
+
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+
+    @PrePresist
+    public void onCreate(){
+        createdAt = new Timestamp(System.currentTimeMillis());
+    }
+    @PreUpdate
+    public void onUpdate(){
+        updatedAt = new 
+    }
 }
