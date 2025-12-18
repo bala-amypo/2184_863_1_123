@@ -31,19 +31,19 @@ public class Skill{
     public String getCategory(){
         return category;
     }
-    public void setCategory(String id){
+    public void setCategory(String category){
         this.category = category;
     }
     public String getDescription(){
         return descrition;
     }
-    public void setDescription(Long id){
+    public void setDescription(String description){
         this.description = description;
     }
     public Boolean getActive(){
-        return id;
+        return active;
     }
-    public void setActive(Long id){
-        this.id = id;
+    public void setActive(Boolean active){
+        this.active = active;
     }
 }
