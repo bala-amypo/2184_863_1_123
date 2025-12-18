@@ -37,11 +37,11 @@ public class Employee{
     public void setId(Long id){
         this.id = id;
     }
-    public String getId(){
+    public String getName(){
         return id;
     }
-    public void setId(Long id){
-        this.id = id;
+    public void setName(String Name){
+        this.name = name;
     }
 
 }
