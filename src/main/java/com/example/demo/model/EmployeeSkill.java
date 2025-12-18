@@ -6,7 +6,7 @@ public class EmployeeSkill{
     private Long id;
 
     private String proficiencyLevel;
-    private Integer yearOfExperience;
+    private Integer yearsOfExperience;
     private Boolean active = true;
 
     public Long getId(){
@@ -18,10 +18,15 @@ public class EmployeeSkill{
     public String getProficiencyLevel(){
         return proficiencyLevel;
     }
-    public void ProficiencyLevel(String category){
-        this.category = category;
+    public void setProficiencyLevel(String proficiencyLevel){
+        this.proficiencyLevel = proficiencyLevel;
     }
-
+    public Integer getYearsOfExperience(){
+        return yearsOfExperience;
+    }
+    public void setYearsOfExperience(String yearsOfExperience){
+        this.proficiencyLevel = proficiencyLevel;
+    }
 
 
 }
