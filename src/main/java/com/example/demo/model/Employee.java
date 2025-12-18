@@ -47,15 +47,27 @@ public class Employee{
         return email;
     }
     public void setEmail(String email){
-        this.category = category;
+        this.email = email;
     }
-    public String getDescription(){
-        return description;
+    public String getDepartment(){
+        return department;
     }
-    public void setDescription(String description){
-        this.description = description;
+    public void setDepartment(String department){
+        this.department = department;
+    }
+    public String getJobTitle(){
+        return jobTitle;
+    }
+    public void setJobTitle(Boolean jobTitle){
+        this.jobTitle = jobTitle;
     }
     public Boolean getActive(){
+        return active;
+    }
+    public void setActive(Boolean active){
+        this.active = active;
+    }
+    public Timestamp getUpdatedAt(){
         return active;
     }
     public void setActive(Boolean active){
