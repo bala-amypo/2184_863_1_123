@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import jarkarta.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Skill{
@@ -35,7 +35,7 @@ public class Skill{
         this.category = category;
     }
     public String getDescription(){
-        return descrition;
+        return description;
     }
     public void setDescription(String description){
         this.description = description;
