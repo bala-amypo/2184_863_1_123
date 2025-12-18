@@ -46,4 +46,5 @@ public class Skill{
     public void setActive(Boolean active){
         this.active = active;
     }
+    
 }
