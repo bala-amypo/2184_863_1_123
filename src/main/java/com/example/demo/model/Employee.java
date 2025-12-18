@@ -1,12 +1,12 @@
 package com.example.demo.model;
 
-import jakarta.presistance.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 public class Employee{
     @Id
-    @GeneratedValue(stratergy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String fullName;
@@ -22,7 +22,7 @@ public class Employee{
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-    @PrePresist
+    @PrePersist
     public void onCreate(){
         createdAt = new Timestamp(System.currentTimeMillis());
     }
