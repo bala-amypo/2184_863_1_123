@@ -12,5 +12,21 @@ public class Skill{
     @Column(unique = true)
     private String name;
 
-    private String 
+    private String category;
+    private String description;
+    private Boolean active = true;
+
+    public Long getId(){
+        return id;
+    }
+    public void setId(Long id){
+        this.id = id;
+    }
+    public Long getName(){
+        return id;
+    }
+    public void setName(Long name){
+        this.name = name;
+    }
+    
 }
