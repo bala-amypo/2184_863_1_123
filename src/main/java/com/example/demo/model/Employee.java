@@ -58,7 +58,7 @@ public class Employee{
     public String getJobTitle(){
         return jobTitle;
     }
-    public void setJobTitle(Boolean jobTitle){
+    public void setJobTitle(String jobTitle){
         this.jobTitle = jobTitle;
     }
     public Boolean getActive(){
