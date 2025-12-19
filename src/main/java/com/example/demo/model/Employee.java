@@ -79,4 +79,10 @@ public class Employee{
     public void setUpdatedAt(LocalDateTime updatedAt){
         this.updatedAt = updatedAt;
     }
+
+    public class Employee(){
+
+    }
+
+    public class Employee()
 }
