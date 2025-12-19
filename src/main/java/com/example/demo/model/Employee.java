@@ -84,8 +84,11 @@ public class Employee{
 
     }
 
-    public class Employee(String fullName,String email,String department.String jobTitle,Boolean active){
+    public class Employee(String fullName,String email,String department,String jobTitle,Boolean active){
         this.fullName = fullName;
-        
+        this.email = email;
+        this.department = department;
+        this.jobTitle = jobTitle;
+        this.active = active;
     }
 }
