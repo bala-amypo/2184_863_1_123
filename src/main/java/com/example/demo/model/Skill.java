@@ -49,7 +49,8 @@ public class Skill{
     
     public Skill (){}
 
-    public Skill (String name,String category,String description,Boolean active){
+    public Skill (Long id,String name,String category,String description,Boolean active){
+        this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;

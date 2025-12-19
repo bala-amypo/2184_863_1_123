@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 public class SkillCategory{
@@ -43,7 +45,7 @@ public class SkillCategory{
     public SkillCategory(){}
 
     public SkillCategory(Long id,String categoryName,String description,Boolean active){
-        t
+        this.id = id;
         this.categoryName = categoryName;
         this.description = description;
         this.active = active;

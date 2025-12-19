@@ -82,7 +82,8 @@ public class Employee{
 
     public Employee(){}
 
-    public Employee(String fullName,String email,String department,String jobTitle,Boolean active){
+    public Employee(Long id,String fullName,String email,String department,String jobTitle,Boolean active){
+        this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.department = department;
