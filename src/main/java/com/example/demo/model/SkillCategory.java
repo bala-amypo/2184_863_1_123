@@ -39,6 +39,15 @@ public class SkillCategory{
     public void setActive(Boolean active){
         this.active = active;
     }
+
+    public SkillCategory(){}
+
+    public SkillCategory(Long id,String categoryName,String description,Boolean active){
+        t
+        this.categoryName = categoryName;
+        this.description = description;
+        this.active = active;
+    }
     
 
 

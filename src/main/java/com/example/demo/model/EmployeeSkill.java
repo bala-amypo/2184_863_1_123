@@ -40,5 +40,6 @@ public class EmployeeSkill{
     public EmployeeSkill(String proficiencyLevel,Integer yearsOfExperience,Boolean active){
         this.proficiencyLevel = proficiencyLevel;
         this.yearsOfExperience = yearsOfExperience;
+        this.active = active;
     }
 }
