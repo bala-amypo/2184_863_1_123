@@ -35,4 +35,10 @@ public class EmployeeSkill{
     public void setActive(Boolean active){
         this.active = active;
     }
+    public EmployeeSkill(){}
+
+    public EmployeeSkill(String proficiencyLevel,Integer yearsOfExperience,Boolean active){
+        this.proficiencyLevel = proficiencyLevel;
+        this.yearsOfExperience = yearsOfExperience;
+    }
 }
