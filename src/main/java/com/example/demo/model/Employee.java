@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 public class Employee{
@@ -19,16 +19,16 @@ public class Employee{
 
     private Boolean active = true;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @PrePersist
     public void onCreate(){
-        createdAt = new Timestamp(System.currentTimeMillis());
+        createdAt = LocalDateTime.now();
     }
     @PreUpdate
     public void onUpdate(){
-        updatedAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = LocalDateTime.now();
     }
 
     public Long getId(){
@@ -67,17 +67,16 @@ public class Employee{
     public void setActive(Boolean active){
         this.active = active;
     }
-    public Timestamp getCreatedAt(){
+    public LocalDateTime getCreatedAt(){
         return createdAt;
     }
-    public void CreatedAt(Timestamp createdAt){
+    public void CreatedAt(LocalDateTime createdAt){
         this.createdAt = createdAt;
     }
-    public Timestamp getUpdatedAt(){
-        return createdAt;
+    public LocalDateTime getUpdatedAt(){
+        return updatedAt;
     }
-    public void setUpdatedAt(Timestamp updatedAt){
+    public void setUpdatedAt(LocalDateTime updatedAt){
         this.updatedAt = updatedAt;
     }
-
 }
