@@ -47,4 +47,12 @@ public class Skill{
         this.active = active;
     }
     
+    public Skill (){}
+
+    public Skill (String name,String category,String description,Boolean active){
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.active = active;
+    }
 }
