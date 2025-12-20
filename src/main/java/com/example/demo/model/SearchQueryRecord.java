@@ -38,7 +38,11 @@ public class SearchQueryRecord{
         this.active = active;
     }
     public SearchQueryRecord(){}
-    public SearchQueryRecord(Long id,){
+    public SearchQueryRecord(Long id,String categoryName,String description,Boolean active){
+        this.id = id;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.active = active;
 
     }
     
