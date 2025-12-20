@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Employee; 
-import com.example.demo.service.AuthService;
+import com.example.demo.model.Employee;
+import com.example.demo.repository.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,23 +9,34 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final EmployeeRepository employeeRepository;
 
-    public AuthController(AuthService authService){
-        this.authService = authService;
+    public AuthController(EmployeeRepository employeeRepository){
+        this.employeeRepository = employeeRepository;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Employee employee){
-        // Example: returns the registered employee
-        Employee saved = authService.register(employee);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<Employee> register(@RequestBody Employee employee){
+        if(employeeRepository.existsByEmail(employee.getEmail())){
+            throw new IllegalArgumentException("Email already registered");
+        }
+        employee.setActive(true);
+        return ResponseEntity.ok(employeeRepository.save(employee));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Employee employee){
-        // Example: returns JWT string
-        String token = authService.login(employee.getEmail(), employee.getJobTitle());
-        return ResponseEntity.ok(token);
+    public ResponseEntity<String> login(@RequestBody Employee employee){
+        Employee emp = employeeRepository.findAll().stream()
+                .filter(e -> e.getEmail().equals(employee.getEmail()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Simple authentication: use jobTitle as a placeholder for password
+        if(!emp.getJobTitle().equals(employee.getJobTitle())){
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+
+        // Return a fake JWT token string
+        return ResponseEntity.ok("fake-jwt-token-for-" + emp.getId());
     }
 }
