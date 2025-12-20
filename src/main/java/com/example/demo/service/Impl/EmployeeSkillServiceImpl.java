@@ -1,5 +1,5 @@
-package com.example.demo.service.Implement;
+package com.example.demo.service.Impl;
 
-public class EmployeeSkillServiceImplement{
+public class EmployeeSkillServiceImpl{
     
 }
