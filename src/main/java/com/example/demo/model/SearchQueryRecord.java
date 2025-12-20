@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "search_query_records")
 public class SearchQueryRecord {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,15 +30,11 @@ public class SearchQueryRecord {
 
     @PrePersist
     public void onCreate() {
-        searchedAt = LocalDateTime.now();
+        this.searchedAt = LocalDateTime.now();
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getSearcherId() {
@@ -67,9 +63,5 @@ public class SearchQueryRecord {
 
     public LocalDateTime getSearchedAt() {
         return searchedAt;
-    }
-
-    public void setSearchedAt(LocalDateTime searchedAt) {
-        this.searchedAt = searchedAt;
     }
 }
