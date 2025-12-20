@@ -37,5 +37,9 @@ public class SearchQueryRecord{
     public void setActive(Boolean active){
         this.active = active;
     }
+    public SearchQueryRecord(){}
+    public SearchQueryRecord(Long id,){
+
+    }
     
 }
