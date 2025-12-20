@@ -3,8 +3,8 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "employee_skills")
 public class EmployeeSkill {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +23,7 @@ public class EmployeeSkill {
 
     private Boolean active = true;
 
+    
     public EmployeeSkill() {
     }
 
@@ -33,7 +34,6 @@ public class EmployeeSkill {
         this.yearsOfExperience = yearsOfExperience;
         this.active = true;
     }
-
     public Long getId() {
         return id;
     }
