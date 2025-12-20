@@ -1,10 +1,14 @@
-@Entity
-public class Employee {
+package com.example.demo.model;
 
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+public class Employee{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     private String fullName;
 
     @Column(unique = true)
@@ -19,64 +23,71 @@ public class Employee {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    public void onCreate() {
+    public void onCreate(){
         createdAt = LocalDateTime.now();
     }
-
     @PreUpdate
-    public void onUpdate() {
+    public void onUpdate(){
         updatedAt = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public Long getId(){
         return id;
     }
-
-    public String getFullName() {   // ✅ FIXED
+    public void setId(Long id){
+        this.id = id;
+    }
+    public String getFullName(){
         return fullName;
     }
-
-    public void setFullName(String fullName) {
+    public void setFullName(String fullName){
         this.fullName = fullName;
     }
-
-    public String getEmail() {
+    public String getEmail(){
         return email;
     }
-
-    public void setEmail(String email) {
+    public void setEmail(String email){
         this.email = email;
     }
-
-    public String getDepartment() {
+    public String getDepartment(){
         return department;
     }
-
-    public void setDepartment(String department) {
+    public void setDepartment(String department){
         this.department = department;
     }
-
-    public String getJobTitle() {
+    public String getJobTitle(){
         return jobTitle;
     }
-
-    public void setJobTitle(String jobTitle) {
+    public void setJobTitle(String jobTitle){
         this.jobTitle = jobTitle;
     }
-
-    public Boolean getActive() {
+    public Boolean getActive(){
         return active;
     }
-
-    public void setActive(Boolean active) {
+    public void setActive(Boolean active){
         this.active = active;
     }
-
-    public LocalDateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt(){
         return createdAt;
     }
-
-    public LocalDateTime getUpdatedAt() {
+    public void setCreatedAt(LocalDateTime createdAt){
+        this.createdAt = createdAt;
+    }
+    public LocalDateTime getUpdatedAt(){
         return updatedAt;
+    }
+    public void setUpdatedAt(LocalDateTime updatedAt){
+        this.updatedAt = updatedAt;
+    }
+
+    public Employee(){}
+
+    public Employee(Long id,String fullName,String email,String department,String jobTitle,Boolean active){
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.department = department;
+        this.jobTitle = jobTitle;
+        this.active = active;
     }
 }
