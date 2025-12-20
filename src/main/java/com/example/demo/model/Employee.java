@@ -37,7 +37,7 @@ public class Employee{
     public void setId(Long id){
         this.id = id;
     }
-    public Long getFullName(){
+    public String getFullName(){
         return fullName;
     }
     public void setFullName(String fullName){
