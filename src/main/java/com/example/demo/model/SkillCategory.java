@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
+
+@Entity
 public class SkillCategory{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
