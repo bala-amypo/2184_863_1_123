@@ -38,7 +38,7 @@ public class Employee{
         this.id = id;
     }
     public Long getFullName(){
-        return full;
+        return fullName;
     }
     public void setFullName(String fullName){
         this.fullName = fullName;
@@ -70,7 +70,7 @@ public class Employee{
     public LocalDateTime getCreatedAt(){
         return createdAt;
     }
-    public void CreatedAt(LocalDateTime createdAt){
+    public void setCreatedAt(LocalDateTime createdAt){
         this.createdAt = createdAt;
     }
     public LocalDateTime getUpdatedAt(){
