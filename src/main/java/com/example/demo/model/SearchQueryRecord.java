@@ -18,16 +18,6 @@ public class SearchQueryRecord {
     private Integer resultsCount;
 
     private LocalDateTime searchedAt;
-
-    public SearchQueryRecord() {
-    }
-
-    public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
-        this.searcherId = searcherId;
-        this.skillsRequested = skillsRequested;
-        this.resultsCount = resultsCount;
-    }
-
     @PrePersist
     public void onCreate() {
         this.searchedAt = LocalDateTime.now();
@@ -63,5 +53,14 @@ public class SearchQueryRecord {
 
     public LocalDateTime getSearchedAt() {
         return searchedAt;
+    }
+    
+    public SearchQueryRecord() {
+    }
+
+    public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
+        this.searcherId = searcherId;
+        this.skillsRequested = skillsRequested;
+        this.resultsCount = resultsCount;
     }
 }

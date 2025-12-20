@@ -24,16 +24,6 @@ public class EmployeeSkill {
     private Boolean active = true;
 
     
-    public EmployeeSkill() {
-    }
-
-    public EmployeeSkill(Employee employee, Skill skill,String proficiencyLevel, Integer yearsOfExperience) {
-        this.employee = employee;
-        this.skill = skill;
-        this.proficiencyLevel = proficiencyLevel;
-        this.yearsOfExperience = yearsOfExperience;
-        this.active = true;
-    }
     public Long getId() {
         return id;
     }
@@ -80,6 +70,17 @@ public class EmployeeSkill {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+    public EmployeeSkill() {
+    }
+
+    public EmployeeSkill(Long id,Employee employee, Skill skill,String proficiencyLevel, Integer yearsOfExperience) {
+        this.id = id;
+        this.employee = employee;
+        this.skill = skill;
+        this.proficiencyLevel = proficiencyLevel;
+        this.yearsOfExperience = yearsOfExperience;
+        this.active = true;
     }
 }
 
