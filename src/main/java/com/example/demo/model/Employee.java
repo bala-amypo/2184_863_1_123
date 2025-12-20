@@ -38,7 +38,7 @@ public class Employee{
         this.id = id;
     }
     public Long getFullName(){
-        return id;
+        return full;
     }
     public void setFullName(String fullName){
         this.fullName = fullName;
