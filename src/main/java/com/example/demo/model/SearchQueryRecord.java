@@ -58,7 +58,8 @@ public class SearchQueryRecord {
     public SearchQueryRecord() {
     }
 
-    public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
+    public SearchQueryRecord(Long id,Long searcherId, String skillsRequested, Integer resultsCount) {
+        this.id = id;
         this.searcherId = searcherId;
         this.skillsRequested = skillsRequested;
         this.resultsCount = resultsCount;

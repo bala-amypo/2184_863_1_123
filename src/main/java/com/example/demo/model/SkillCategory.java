@@ -17,14 +17,6 @@ public class SkillCategory {
 
     private Boolean active = true;
 
-    public SkillCategory() {}
-
-    public SkillCategory(String categoryName, String description, Boolean active) {
-        this.categoryName = categoryName;
-        this.description = description;
-        this.active = active;
-    }
-
     public Long getId(){
         return id; 
     }
@@ -47,6 +39,14 @@ public class SkillCategory {
         return active;
     }
     public void setActive(Boolean active){
+        this.active = active;
+    }
+    public SkillCategory() {}
+
+    public SkillCategory(Long id,String categoryName, String description, Boolean active) {
+        this.id=id;
+        this.categoryName = categoryName;
+        this.description = description;
         this.active = active;
     }
 }
