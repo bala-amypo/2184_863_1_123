@@ -19,11 +19,9 @@ public class SearchQueryRecord {
 
     private LocalDateTime searchedAt;
 
-    // No-args constructor
     public SearchQueryRecord() {
     }
 
-    // Parameterized constructor
     public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
         this.searcherId = searcherId;
         this.skillsRequested = skillsRequested;
