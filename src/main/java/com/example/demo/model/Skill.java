@@ -22,7 +22,7 @@ public class Skill{
     public void setId(Long id){
         this.id = id;
     }
-    public Long getName(){
+    public String getName(){
         return name;
     }
     public void setName(String name){
