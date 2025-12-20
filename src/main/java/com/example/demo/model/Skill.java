@@ -1,10 +1,6 @@
-package com.example.demo.model;
-
-import jakarta.persistence.*;
-
 @Entity
-public class Skill{
-    
+public class Skill {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,44 +12,39 @@ public class Skill{
     private String description;
     private Boolean active = true;
 
-    public Long getId(){
+    public Long getId() {
         return id;
     }
-    public void setId(Long id){
-        this.id = id;
+
+    public String getName() {   
+        return name;
     }
-    public Long getName(){
-        return id;
-    }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
-    public String getCategory(){
+
+    public String getCategory() {
         return category;
     }
-    public void setCategory(String category){
+
+    public void setCategory(String category) {
         this.category = category;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return description;
     }
-    public void setDescription(String description){
+
+    public void setDescription(String description) {
         this.description = description;
     }
-    public Boolean getActive(){
+
+    public Boolean getActive() {
         return active;
     }
-    public void setActive(Boolean active){
-        this.active = active;
-    }
-    
-    public Skill (){}
 
-    public Skill (Long id,String name,String category,String description,Boolean active){
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.description = description;
+    public void setActive(Boolean active) {
         this.active = active;
     }
 }
