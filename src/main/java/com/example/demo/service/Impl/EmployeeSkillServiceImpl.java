@@ -1,6 +1,5 @@
 package com.example.demo.service.Impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.model.Skill;
@@ -21,7 +20,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
                                     EmployeeRepository employeeRepository,
-                                    SkillRepository skillRepository){
+                                    SkillRepository skillRepository) {
         this.employeeSkillRepository = employeeSkillRepository;
         this.employeeRepository = employeeRepository;
         this.skillRepository = skillRepository;
@@ -37,7 +36,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     @Override
     public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill mapping) {
         EmployeeSkill existing = employeeSkillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("EmployeeSkill not found"));
+                .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
 
         validateMapping(mapping);
 
@@ -45,6 +44,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         existing.setSkill(mapping.getSkill());
         existing.setProficiencyLevel(mapping.getProficiencyLevel());
         existing.setYearsOfExperience(mapping.getYearsOfExperience());
+
         return employeeSkillRepository.save(existing);
     }
 
@@ -61,7 +61,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     @Override
     public void deactivateEmployeeSkill(Long id) {
         EmployeeSkill mapping = employeeSkillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("EmployeeSkill not found"));
+                .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
         mapping.setActive(false);
         employeeSkillRepository.save(mapping);
     }
@@ -70,21 +70,22 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         Employee employee = mapping.getEmployee();
         Skill skill = mapping.getSkill();
 
-        if(mapping.getYearsOfExperience() != null && mapping.getYearsOfExperience() < 0){
+        if (mapping.getYearsOfExperience() != null && mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years must be non-negative");
         }
 
-        if(mapping.getProficiencyLevel() == null || 
-           !List.of("BEGINNER","INTERMEDIATE","ADVANCED").contains(mapping.getProficiencyLevel())){
+        if (mapping.getProficiencyLevel() == null ||
+                !List.of("BEGINNER", "INTERMEDIATE", "ADVANCED")
+                        .contains(mapping.getProficiencyLevel())) {
             throw new IllegalArgumentException("Invalid proficiency");
         }
 
-        if(employee.getActive() != null && !employee.getActive()){
-            throw new IllegalArgumentException("inactive employee");
+        if (employee == null || employee.getActive() != null && !employee.getActive()) {
+            throw new IllegalArgumentException("Inactive employee");
         }
 
-        if(skill.getActive() != null && !skill.getActive()){
-            throw new IllegalArgumentException("inactive skill");
+        if (skill == null || skill.getActive() != null && !skill.getActive()) {
+            throw new IllegalArgumentException("Inactive skill");
         }
     }
 }
