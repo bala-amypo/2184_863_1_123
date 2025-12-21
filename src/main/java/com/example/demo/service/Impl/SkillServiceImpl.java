@@ -1,57 +1,57 @@
 package com.example.demo.service.Impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
-import com.example.demo.exception.ResourceNotFoundException;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class SkillServiceImpl implements SkillService {
 
-    private final SkillRepository skillRepository;
+    private final SkillRepository repo;
 
-    public SkillServiceImpl(SkillRepository skillRepository){
-        this.skillRepository = skillRepository;
+    public SkillServiceImpl(SkillRepository repo) {
+        this.repo = repo;
     }
 
     @Override
-    public Skill createSkill(Skill skill){
-        if(skillRepository.existsByName(skill.getName())){
+    public List<Skill> getAllSkills(boolean onlyActive) {
+        if (onlyActive) {
+            return repo.findByActiveTrue();
+        }
+        return repo.findAll();
+    }
+
+    @Override
+    public Skill createSkill(Skill skill) {
+        if (repo.existsByName(skill.getName())) {
             throw new IllegalArgumentException("Skill name must be unique");
         }
         skill.setActive(true);
-        return skillRepository.save(skill);
+        return repo.save(skill);
     }
 
     @Override
-    public Skill updateSkill(Long id, Skill skill){
+    public Skill getSkillById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skill id not found"));
+    }
+
+    @Override
+    public Skill updateSkill(Long id, Skill newSkill) {
         Skill existing = getSkillById(id);
-        existing.setName(skill.getName());
-        existing.setCategory(skill.getCategory());
-        existing.setDescription(skill.getDescription());
-        return skillRepository.save(existing);
+        newSkill.setId(existing.getId());
+        newSkill.setActive(existing.getActive());
+        return repo.save(newSkill);
     }
 
     @Override
-    public Skill getSkillById(Long id){
-        return skillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
-    }
-
-    @Override
-    public List<Skill> getAllSkills(boolean onlyActive){
-        if(onlyActive){
-            return skillRepository.findByActiveTrue();
-        }
-        return skillRepository.findAll();
-    }
-
-    @Override
-    public void deactivateSkill(Long id){
-        Skill skill = getSkillById(id);
+    public void deactivateSkill(Long id) {
+        Skill skill = getSkillById(id); // validate existence
         skill.setActive(false);
-        skillRepository.save(skill);
+        repo.save(skill);
     }
 }
