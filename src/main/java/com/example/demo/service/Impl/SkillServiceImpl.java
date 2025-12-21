@@ -1,4 +1,4 @@
-package com.example.demo.service.Impl;
+package com.example.demo.service.impl;
 
 import java.util.List;
 
@@ -19,9 +19,7 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<Skill> getAllSkills(boolean onlyActive) {
-        if (onlyActive) {
-            return repo.findByActiveTrue();
-        }
+        if (onlyActive) return repo.findByActiveTrue();
         return repo.findAll();
     }
 
@@ -50,8 +48,8 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public void deactivateSkill(Long id) {
-        Skill skill = getSkillById(id); // validate existence
-        skill.setActive(false);
-        repo.save(skill);
+        Skill existing = getSkillById(id);
+        existing.setActive(false);
+        repo.save(existing);
     }
 }

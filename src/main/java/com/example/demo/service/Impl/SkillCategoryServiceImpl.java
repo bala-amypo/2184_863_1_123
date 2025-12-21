@@ -1,4 +1,4 @@
-package com.example.demo.service.Impl;
+package com.example.demo.service.impl;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class SkillCategoryServiceImpl implements SkillCategoryService {
 
     @Override
     public void deactivateCategory(Long id) {
-        SkillCategory existing = getCategoryById(id); // validate existence
+        SkillCategory existing = getCategoryById(id);
         existing.setActive(false);
         repo.save(existing);
     }

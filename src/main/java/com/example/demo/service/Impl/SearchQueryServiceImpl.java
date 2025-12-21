@@ -50,16 +50,14 @@ public class SearchQueryServiceImpl implements SearchQueryService {
             throw new IllegalArgumentException("Skills list must not be empty");
         }
 
-        // Fetch all active EmployeeSkill mappings
         List<EmployeeSkill> activeMappings = employeeSkillRepo.findByActiveTrue();
-
         Map<Long, Set<String>> employeeSkills = new HashMap<>();
         Map<Long, Employee> employeeMap = new HashMap<>();
 
         for (EmployeeSkill es : activeMappings) {
             Employee emp = es.getEmployee();
             if (emp == null || emp.getId() == null) continue;
-            if (emp.getId().equals(userId)) continue; // skip searching user
+            if (emp.getId().equals(userId)) continue;
 
             employeeSkills
                     .computeIfAbsent(emp.getId(), k -> new HashSet<>())
@@ -68,7 +66,6 @@ public class SearchQueryServiceImpl implements SearchQueryService {
             employeeMap.put(emp.getId(), emp);
         }
 
-        // Filter employees who have all requested skills
         List<Employee> matchedEmployees = employeeSkills.entrySet()
                 .stream()
                 .filter(e -> e.getValue().containsAll(skills))
@@ -80,7 +77,6 @@ public class SearchQueryServiceImpl implements SearchQueryService {
         record.setSkillsRequested(String.join(",", skills));
         record.setResultsCount(matchedEmployees.size());
         record.setSearcherId(userId);
-
         saveQuery(record);
 
         return matchedEmployees;
