@@ -12,7 +12,7 @@ public class SearchQueryRecord {
 
     private Long searcherId;
 
-    @Column(nullable = false)
+    @Column
     private String skillsRequested;
 
     private Integer resultsCount;
