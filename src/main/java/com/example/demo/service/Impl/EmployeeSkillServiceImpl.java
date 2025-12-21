@@ -21,9 +21,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     private final EmployeeRepository employeeRepo;
     private final SkillRepository skillRepo;
 
-    public EmployeeSkillServiceImpl(EmployeeSkillRepository repo,
-                                    EmployeeRepository employeeRepo,
-                                    SkillRepository skillRepo) {
+    public EmployeeSkillServiceImpl(EmployeeSkillRepository repo,EmployeeRepository employeeRepo,SkillRepository skillRepo) {
         this.repo = repo;
         this.employeeRepo = employeeRepo;
         this.skillRepo = skillRepo;

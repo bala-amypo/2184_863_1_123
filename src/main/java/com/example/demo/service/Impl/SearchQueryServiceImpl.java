@@ -17,8 +17,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
     private final SearchQueryRecordRepository repo;
     private final EmployeeSkillRepository employeeSkillRepo;
 
-    public SearchQueryServiceImpl(SearchQueryRecordRepository repo,
-                                  EmployeeSkillRepository employeeSkillRepo) {
+    public SearchQueryServiceImpl(SearchQueryRecordRepository repo,EmployeeSkillRepository employeeSkillRepo) {
         this.repo = repo;
         this.employeeSkillRepo = employeeSkillRepo;
     }
@@ -72,7 +71,6 @@ public class SearchQueryServiceImpl implements SearchQueryService {
                 .map(e -> employeeMap.get(e.getKey()))
                 .toList();
 
-        // Save search query record
         SearchQueryRecord record = new SearchQueryRecord();
         record.setSkillsRequested(String.join(",", skills));
         record.setResultsCount(matchedEmployees.size());
