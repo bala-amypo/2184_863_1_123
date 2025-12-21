@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill newMapping) {
         EmployeeSkill existing = getEmployeeSkillById(id);
         validateMapping(newMapping);
-
         newMapping.setId(existing.getId());
         return repo.save(newMapping);
     }
@@ -80,8 +81,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         }
 
         if (mapping.getProficiencyLevel() == null ||
-                !List.of("BEGINNER", "INTERMEDIATE", "ADVANCED")
-                        .contains(mapping.getProficiencyLevel())) {
+                !Set.of("BEGINNER", "INTERMEDIATE", "ADVANCED").contains(mapping.getProficiencyLevel())) {
             throw new IllegalArgumentException("Invalid proficiency");
         }
 

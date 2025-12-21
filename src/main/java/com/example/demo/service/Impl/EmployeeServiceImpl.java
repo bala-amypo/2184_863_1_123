@@ -1,9 +1,7 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
@@ -45,8 +43,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deactivateEmployee(Long id) {
-        Employee employee = getEmployeeById(id);
-        employee.setActive(false);
-        repo.save(employee);
+        Employee existing = getEmployeeById(id);
+        existing.setActive(false);
+        repo.save(existing);
     }
 }
