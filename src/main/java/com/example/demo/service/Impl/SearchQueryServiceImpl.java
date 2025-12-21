@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.model.SearchQueryRecord;
@@ -30,6 +29,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 
     @Override
     public List<Employee> searchEmployeesBySkills(List<String> skills, Long userId) {
+
         if (skills == null || skills.isEmpty()) {
             throw new IllegalArgumentException("Skills list must not be empty");
         }
@@ -37,25 +37,35 @@ public class SearchQueryServiceImpl implements SearchQueryService {
         // Fetch all active EmployeeSkill mappings
         List<EmployeeSkill> activeMappings = employeeSkillRepository.findByActiveTrue();
 
-        // Map to track which employee has which skills
         Map<Long, Set<String>> employeeSkills = new HashMap<>();
         Map<Long, Employee> employeeMap = new HashMap<>();
 
         for (EmployeeSkill es : activeMappings) {
             Employee emp = es.getEmployee();
-            if (emp.getId().equals(userId)) continue; // skip searching user
-            employeeSkills.computeIfAbsent(emp.getId(), k -> new HashSet<>())
-                          .add(es.getSkill().getName());
+
+            if (emp == null || emp.getId() == null) {
+                continue;
+            }
+
+            if (emp.getId().equals(userId)) {
+                continue; // skip searching user
+            }
+
+            employeeSkills
+                    .computeIfAbsent(emp.getId(), k -> new HashSet<>())
+                    .add(es.getSkill().getName());
+
             employeeMap.put(emp.getId(), emp);
         }
 
-        // Keep only employees who have all requested skills
-        List<Employee> matchedEmployees = employeeSkills.entrySet().stream()
+        // Filter employees who have all requested skills
+        List<Employee> matchedEmployees = employeeSkills.entrySet()
+                .stream()
                 .filter(e -> e.getValue().containsAll(skills))
                 .map(e -> employeeMap.get(e.getKey()))
                 .toList();
 
-        // Save the search query record
+        // Save search query record
         SearchQueryRecord record = new SearchQueryRecord();
         record.setSkillsRequested(String.join(",", skills));
         record.setResultsCount(matchedEmployees.size());
@@ -69,7 +79,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
     @Override
     public SearchQueryRecord getQueryById(Long id) {
         return searchQueryRecordRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("SearchQueryRecord not found"));
+                .orElseThrow(() -> new RuntimeException("SearchQueryRecord not found"));
     }
 
     @Override
