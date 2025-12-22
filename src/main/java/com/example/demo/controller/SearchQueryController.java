@@ -19,8 +19,7 @@ public class SearchQueryController {
     }
 
     @PostMapping("/employees")
-    public ResponseEntity<List<Employee>> searchEmployees(@RequestBody List<String> skills,
-                                                          @RequestParam Long userId){
+    public ResponseEntity<List<Employee>> searchEmployees(@RequestBody List<String> skills, @RequestParam Long userId){
         List<Employee> result = searchQueryService.searchEmployeesBySkills(skills, userId);
         return ResponseEntity.ok(result);
     }

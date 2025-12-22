@@ -23,8 +23,7 @@ public class EmployeeSkillController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeSkill> updateMapping(@PathVariable Long id,
-                                                       @RequestBody EmployeeSkill mapping){
+    public ResponseEntity<EmployeeSkill> updateMapping(@PathVariable Long id,@RequestBody EmployeeSkill mapping){
         return ResponseEntity.ok(employeeSkillService.updateEmployeeSkill(id, mapping));
     }
 
