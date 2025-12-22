@@ -23,8 +23,7 @@ public class SkillCategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SkillCategory> updateCategory(@PathVariable Long id,
-                                                        @RequestBody SkillCategory category){
+    public ResponseEntity<SkillCategory> updateCategory(@PathVariable Long id,@RequestBody SkillCategory category){
         return ResponseEntity.ok(skillCategoryService.updateCategory(id, category));
     }
 
