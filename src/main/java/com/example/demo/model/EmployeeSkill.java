@@ -10,11 +10,11 @@ public class EmployeeSkill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "skill_id")
     private Skill skill;
 
@@ -22,14 +22,14 @@ public class EmployeeSkill {
     private Integer yearsOfExperience;
     private Boolean active = true;
 
-    // Constructors
-    public EmployeeSkill() {
-    }
+    public EmployeeSkill() {}
 
-    public EmployeeSkill(Long id, Employee employee, Skill skill,
-                         String proficiencyLevel, Integer yearsOfExperience,
-                         Boolean active) {
-        this.id = id;
+    public EmployeeSkill(Employee employee, Skill skill, String proficiencyLevel, Integer yearsOfExperience, Boolean active) {
+        if (!employee.getActive()) throw new IllegalArgumentException("inactive employee");
+        if (!skill.getActive()) throw new IllegalArgumentException("inactive skill");
+        if (yearsOfExperience < 0) throw new IllegalArgumentException("Experience years");
+        if (!isValidProficiency(proficiencyLevel)) throw new IllegalArgumentException("Invalid proficiency");
+
         this.employee = employee;
         this.skill = skill;
         this.proficiencyLevel = proficiencyLevel;
@@ -37,23 +37,34 @@ public class EmployeeSkill {
         this.active = active;
     }
 
-    // Getters & Setters
+    private boolean isValidProficiency(String level) {
+        return level != null && (level.equals("Beginner") || level.equals("Intermediate") || level.equals("Advanced") || level.equals("Expert"));
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public Employee getEmployee() { return employee; }
-    public void setEmployee(Employee employee) { this.employee = employee; }
+    public void setEmployee(Employee employee) {
+        if (!employee.getActive()) throw new IllegalArgumentException("inactive employee");
+        this.employee = employee;
+    }
 
     public Skill getSkill() { return skill; }
-    public void setSkill(Skill skill) { this.skill = skill; }
+    public void setSkill(Skill skill) {
+        if (!skill.getActive()) throw new IllegalArgumentException("inactive skill");
+        this.skill = skill;
+    }
 
     public String getProficiencyLevel() { return proficiencyLevel; }
     public void setProficiencyLevel(String proficiencyLevel) {
+        if (!isValidProficiency(proficiencyLevel)) throw new IllegalArgumentException("Invalid proficiency");
         this.proficiencyLevel = proficiencyLevel;
     }
 
     public Integer getYearsOfExperience() { return yearsOfExperience; }
     public void setYearsOfExperience(Integer yearsOfExperience) {
+        if (yearsOfExperience < 0) throw new IllegalArgumentException("Experience years");
         this.yearsOfExperience = yearsOfExperience;
     }
 
