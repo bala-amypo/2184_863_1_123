@@ -14,11 +14,11 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
 
     List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 
-    // Custom query to find employees who have all the skills in the list
-    @Query("SELECT e FROM Employee e JOIN EmployeeSkill es ON e.id = es.employee.id " +
-           "WHERE es.skill.name IN :skillNames " +
-           "GROUP BY e.id " +
-           "HAVING COUNT(DISTINCT es.skill.name) = :count")
-    List<Employee> findEmployeesByAllSkillNames(@Param("skillNames") List<String> skillNames,
-                                                @Param("count") Long count);
+    @Query("""
+        SELECT DISTINCT es.employee 
+        FROM EmployeeSkill es 
+        JOIN es.skill s 
+        WHERE s.name IN :skills AND es.employee.id != :userId AND es.active = true
+        """)
+    List<Employee> findEmployeesByAllSkillNames(@Param("skills") List<String> skills, @Param("userId") Long userId);
 }
