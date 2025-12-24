@@ -14,39 +14,34 @@ public class SkillCategory {
     private String categoryName;
 
     private String description;
-
     private Boolean active = true;
 
-    public Long getId(){
-        return id; 
+    // Constructors
+    public SkillCategory() {
     }
-    public void setId(Long id){
-        this.id = id;
-    }
-    public String getCategoryName(){ 
-        return categoryName; 
-    }
-    public void setCategoryName(String categoryName){ 
-        this.categoryName = categoryName;
-    }
-    public String getDescription(){
-        return description;
-    }
-    public void setDescription(String description){
-        this.description = description;
-    }
-    public Boolean getActive(){
-        return active;
-    }
-    public void setActive(Boolean active){
-        this.active = active;
-    }
-    public SkillCategory() {}
 
-    public SkillCategory(Long id,String categoryName, String description, Boolean active) {
-        this.id=id;
+    public SkillCategory(Long id, String categoryName,
+                         String description, Boolean active) {
+        this.id = id;
         this.categoryName = categoryName;
         this.description = description;
         this.active = active;
     }
+
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
