@@ -1,46 +1,48 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
-import com.example.demo.service.SearchQueryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final SearchQueryService searchQueryService;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, SearchQueryService searchQueryService) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.searchQueryService = searchQueryService;
     }
 
     @Override
     public Employee createEmployee(Employee employee) {
+        employeeRepository.findByEmail(employee.getEmail()).ifPresent(e -> {
+            throw new IllegalArgumentException("Email already exists");
+        });
         employee.setActive(true);
         return employeeRepository.save(employee);
     }
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
-        Employee existing = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        Employee existing = getEmployeeById(id);
         existing.setFullName(employee.getFullName());
         existing.setEmail(employee.getEmail());
+        existing.setDesignation(employee.getDesignation());
         existing.setDepartment(employee.getDepartment());
-        existing.setJobTitle(employee.getJobTitle());
+        existing.setYearsOfExperience(employee.getYearsOfExperience());
         return employeeRepository.save(existing);
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
     }
 
     @Override
@@ -50,15 +52,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deactivateEmployee(Long id) {
-        Employee existing = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        existing.setActive(false);
-        employeeRepository.save(existing);
-    }
-
-    @Override
-    public List<Employee> searchEmployees(List<String> skills, Long userId) {
-        // delegate to searchQueryService
-        return searchQueryService.searchEmployeesBySkills(skills, userId);
+        Employee employee = getEmployeeById(id);
+        employee.setActive(false);
+        employeeRepository.save(employee);
     }
 }

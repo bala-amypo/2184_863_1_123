@@ -9,7 +9,4 @@ public interface EmployeeService {
     Employee getEmployeeById(Long id);
     List<Employee> getAllEmployees();
     void deactivateEmployee(Long id);
-
-    // For search query
-    List<Employee> searchEmployees(List<String> skills, Long userId);
 }

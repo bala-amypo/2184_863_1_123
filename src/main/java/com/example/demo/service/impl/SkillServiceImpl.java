@@ -1,13 +1,16 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
@@ -17,18 +20,37 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill create(Skill skill) {
+    public Skill createSkill(Skill skill) {
+        skillRepository.findByName(skill.getName()).ifPresent(s -> {
+            throw new IllegalArgumentException("Skill name already exists");
+        });
+        skill.setActive(true);
         return skillRepository.save(skill);
     }
 
     @Override
-    public List<Skill> getAll() {
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existing = getSkillById(id);
+        existing.setName(skill.getName());
+        existing.setCategory(skill.getCategory());
+        return skillRepository.save(existing);
+    }
+
+    @Override
+    public Skill getSkillById(Long id) {
+        return skillRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
+    }
+
+    @Override
+    public List<Skill> getAllSkills() {
         return skillRepository.findAll();
     }
 
     @Override
-    public Skill getById(Long id) {
-        return skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
+    public void deactivateSkill(Long id) {
+        Skill skill = getSkillById(id);
+        skill.setActive(false);
+        skillRepository.save(skill);
     }
 }
