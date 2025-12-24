@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Configuration;
 public class ServletConfig {
 
     @Bean
-    public ServletRegistrationBean<HelloServlet> helloServletRegistration(HelloServlet servlet) {
-        ServletRegistrationBean<HelloServlet> bean = new ServletRegistrationBean<>(servlet, "/hello-servlet");
-        return bean;
+    public ServletRegistrationBean<HelloServlet> helloServlet() {
+        return new ServletRegistrationBean<>(
+                new HelloServlet(),
+                "/hello-servlet"
+        );
     }
 }
