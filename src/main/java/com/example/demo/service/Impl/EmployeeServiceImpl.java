@@ -1,50 +1,52 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-import org.springframework.stereotype.Service;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 
-@Service
+import java.util.List;
+
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository repo;
+    private final EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository repo) {
-        this.repo = repo;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public Employee createEmployee(Employee employee) {
-        return repo.save(employee);
+        employeeRepository.findByEmail(employee.getEmail())
+                .ifPresent(e -> { throw new IllegalArgumentException("Email already exists"); });
+        employee.setActive(true);
+        return employeeRepository.save(employee);
     }
 
     @Override
-    public Employee updateEmployee(Long id, Employee newEmployee) {
+    public Employee updateEmployee(Long id, Employee employee) {
         Employee existing = getEmployeeById(id);
-        newEmployee.setId(existing.getId());
-        return repo.save(newEmployee);
+        existing.setFullName(employee.getFullName());
+        existing.setDepartment(employee.getDepartment());
+        existing.setJobTitle(employee.getJobTitle());
+        return employeeRepository.save(existing);
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee id not found"));
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
     }
 
     @Override
-    public List<Employee> getAllEmployees(boolean onlyActive) {
-        if (onlyActive) {
-            return repo.findByActiveTrue();
-        }
-        return repo.findAll();
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findByActiveTrue();
     }
 
     @Override
     public void deactivateEmployee(Long id) {
-        Employee existing = getEmployeeById(id);
-        existing.setActive(false);
-        repo.save(existing);
+        Employee employee = getEmployeeById(id);
+        employee.setActive(false);
+        employeeRepository.save(employee);
     }
 }

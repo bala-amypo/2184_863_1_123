@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import java.util.List;
 import com.example.demo.model.Employee;
+import java.util.List;
 
 public interface EmployeeService {
 
@@ -11,7 +11,7 @@ public interface EmployeeService {
 
     Employee getEmployeeById(Long id);
 
-    List<Employee> getAllEmployees(boolean onlyActive);
+    List<Employee> getAllEmployees();
 
     void deactivateEmployee(Long id);
 }
