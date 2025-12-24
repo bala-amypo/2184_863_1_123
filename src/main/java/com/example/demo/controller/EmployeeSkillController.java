@@ -1,46 +1,26 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.EmployeeSkill;
-import com.example.demo.service.EmployeeSkillService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/employee-skills")
 public class EmployeeSkillController {
 
-    private final EmployeeSkillService employeeSkillService;
-
-    public EmployeeSkillController(EmployeeSkillService employeeSkillService) {
-        this.employeeSkillService = employeeSkillService;
-    }
+    private final List<EmployeeSkill> skills = new ArrayList<>();
 
     @PostMapping("/")
-    public EmployeeSkill create(@RequestBody EmployeeSkill mapping) {
-        return employeeSkillService.createEmployeeSkill(mapping);
+    public ResponseEntity<EmployeeSkill> addSkill(@RequestBody EmployeeSkill skill) {
+        skills.add(skill);
+        return ResponseEntity.ok(skill);
     }
 
-    @PutMapping("/{id}")
-    public EmployeeSkill update(@PathVariable Long id,
-                                @RequestBody EmployeeSkill mapping) {
-        return employeeSkillService.updateEmployeeSkill(id, mapping);
-    }
-
-    @GetMapping("/employee/{employeeId}")
-    public List<EmployeeSkill> getSkillsForEmployee(
-            @PathVariable Long employeeId) {
-        return employeeSkillService.getSkillsForEmployee(employeeId);
-    }
-
-    @GetMapping("/skill/{skillId}")
-    public List<EmployeeSkill> getEmployeesBySkill(
-            @PathVariable Long skillId) {
-        return employeeSkillService.getEmployeesBySkill(skillId);
-    }
-
-    @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-        employeeSkillService.deactivateEmployeeSkill(id);
+    @GetMapping("/")
+    public ResponseEntity<List<EmployeeSkill>> getSkills() {
+        return ResponseEntity.ok(skills);
     }
 }
