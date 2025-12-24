@@ -18,13 +18,19 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public List<EmployeeSkill> getSkillsByEmployeeId(Long employeeId) {
-        // Uses repository method findByEmployeeIdAndActiveTrue
         return employeeSkillRepository.findByEmployeeIdAndActiveTrue(employeeId);
     }
 
     @Override
     public List<EmployeeSkill> getEmployeesBySkillId(Long skillId) {
-        // Uses repository method findBySkillIdAndActiveTrue
         return employeeSkillRepository.findBySkillIdAndActiveTrue(skillId);
+    }
+
+    @Override
+    public void deactivateEmployeeSkill(Long id) {
+        // Example implementation
+        EmployeeSkill es = employeeSkillRepository.findById(id).orElseThrow();
+        es.setActive(false);
+        employeeSkillRepository.save(es);
     }
 }

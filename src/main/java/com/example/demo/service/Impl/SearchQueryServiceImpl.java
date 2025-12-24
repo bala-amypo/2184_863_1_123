@@ -18,7 +18,6 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 
     @Override
     public List<Employee> findEmployeesByAllSkills(List<String> skills) {
-        // Matches repository method: only one parameter
-        return employeeSkillRepository.findEmployeesByAllSkillNames(skills);
+        return employeeSkillRepository.findEmployeesByAllSkillNames(skills); // single param
     }
 }

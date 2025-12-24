@@ -18,7 +18,13 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<Skill> getAllActiveSkills() {
-        // Uses repository method findByActiveTrue
         return skillRepository.findByActiveTrue();
+    }
+
+    @Override
+    public void deactivateSkill(Long id) {
+        Skill skill = skillRepository.findById(id).orElseThrow();
+        skill.setActive(false);
+        skillRepository.save(skill);
     }
 }
