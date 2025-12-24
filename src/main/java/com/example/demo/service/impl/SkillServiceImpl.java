@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
@@ -17,14 +18,38 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public List<Skill> getAllActiveSkills() {
+    public Skill createSkill(Skill skill) {
+        skillRepository.findByName(skill.getName())
+                .ifPresent(s -> { throw new IllegalArgumentException("Skill name already exists"); });
+        if (skill.getActive() == null) skill.setActive(true);
+        return skillRepository.save(skill);
+    }
+
+    @Override
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existing = getSkillById(id);
+        existing.setName(skill.getName());
+        existing.setCategory(skill.getCategory());
+        existing.setDescription(skill.getDescription());
+        existing.setActive(skill.getActive());
+        return skillRepository.save(existing);
+    }
+
+    @Override
+    public Skill getSkillById(Long id) {
+        return skillRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
+    }
+
+    @Override
+    public List<Skill> getAllSkills() {
         return skillRepository.findByActiveTrue();
     }
 
     @Override
     public void deactivateSkill(Long id) {
-        Skill skill = skillRepository.findById(id).orElseThrow();
-        skill.setActive(false);
-        skillRepository.save(skill);
+        Skill existing = getSkillById(id);
+        existing.setActive(false);
+        skillRepository.save(existing);
     }
 }
