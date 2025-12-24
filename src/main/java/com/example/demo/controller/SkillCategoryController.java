@@ -11,35 +11,35 @@ import java.util.List;
 @RequestMapping("/api/skill-categories")
 public class SkillCategoryController {
 
-    private final SkillCategoryService categoryService;
+    private final SkillCategoryService skillCategoryService;
 
-    public SkillCategoryController(SkillCategoryService categoryService){
-        this.categoryService = categoryService;
+    public SkillCategoryController(SkillCategoryService skillCategoryService){
+        this.skillCategoryService = skillCategoryService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<SkillCategory> createCategory(@RequestBody SkillCategory category){
-        return ResponseEntity.ok(categoryService.createCategory(category));
+        return ResponseEntity.ok(skillCategoryService.createCategory(category));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SkillCategory> updateCategory(@PathVariable Long id, @RequestBody SkillCategory category){
-        return ResponseEntity.ok(categoryService.updateCategory(id, category));
+        return ResponseEntity.ok(skillCategoryService.updateCategory(id, category));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SkillCategory> getCategory(@PathVariable Long id){
-        return ResponseEntity.ok(categoryService.getCategoryById(id));
+        return ResponseEntity.ok(skillCategoryService.getCategoryById(id));
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<SkillCategory>> getAllCategories(){
-        return ResponseEntity.ok(categoryService.getAllCategories());
+        return ResponseEntity.ok(skillCategoryService.getAllCategories());
     }
 
     @PutMapping("/{id}/deactivate")
     public ResponseEntity<Void> deactivateCategory(@PathVariable Long id){
-        categoryService.deactivateCategory(id);
+        skillCategoryService.deactivateCategory(id);
         return ResponseEntity.ok().build();
     }
 }

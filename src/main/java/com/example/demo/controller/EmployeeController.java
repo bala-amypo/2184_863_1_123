@@ -17,31 +17,28 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        Employee created = employeeService.createEmployee(employee);
-        return ResponseEntity.ok(created);
+    @PostMapping("/")
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee){
+        return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
-        Employee updated = employeeService.updateEmployee(id, employee);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
-        Employee employee = employeeService.getEmployeeById(id);
-        return ResponseEntity.ok(employee);
+    public ResponseEntity<Employee> getEmployee(@PathVariable Long id){
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    @GetMapping("/")
+    public ResponseEntity<List<Employee>> getAllEmployees(){
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivateEmployee(@PathVariable Long id) {
+    public ResponseEntity<Void> deactivateEmployee(@PathVariable Long id){
         employeeService.deactivateEmployee(id);
         return ResponseEntity.ok().build();
     }

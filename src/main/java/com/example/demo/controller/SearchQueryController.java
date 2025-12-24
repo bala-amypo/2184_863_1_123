@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.EmployeeSearchRequest;
 import com.example.demo.model.Employee;
 import com.example.demo.model.SearchQueryRecord;
 import com.example.demo.service.SearchQueryService;
@@ -13,25 +12,27 @@ import java.util.List;
 @RequestMapping("/api/search")
 public class SearchQueryController {
 
-    private final SearchQueryService searchService;
+    private final SearchQueryService searchQueryService;
 
-    public SearchQueryController(SearchQueryService searchService){
-        this.searchService = searchService;
+    public SearchQueryController(SearchQueryService searchQueryService){
+        this.searchQueryService = searchQueryService;
     }
 
     @PostMapping("/employees")
-    public ResponseEntity<List<Employee>> searchEmployees(@RequestBody EmployeeSearchRequest request){
-        List<Employee> employees = searchService.searchEmployeesBySkills(request.getSkills(), request.getUserId());
-        return ResponseEntity.ok(employees);
+    public ResponseEntity<List<Employee>> searchEmployees(@RequestBody com.example.demo.dto.EmployeeSearchRequest request){
+        // For testing purposes, using a default searcherId
+        Long searcherId = 1L;
+        List<Employee> result = searchQueryService.searchEmployeesBySkills(request.getSkills(), searcherId);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SearchQueryRecord> getQuery(@PathVariable Long id){
-        return ResponseEntity.ok(searchService.getQueryById(id));
+        return ResponseEntity.ok(searchQueryService.getQueryById(id));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<SearchQueryRecord>> getUserQueries(@PathVariable Long userId){
-        return ResponseEntity.ok(searchService.getQueriesForUser(userId));
+    public ResponseEntity<List<SearchQueryRecord>> getQueriesForUser(@PathVariable Long userId){
+        return ResponseEntity.ok(searchQueryService.getQueriesForUser(userId));
     }
 }

@@ -17,28 +17,28 @@ public class SkillController {
         this.skillService = skillService;
     }
 
-    @PostMapping
-    public ResponseEntity<Skill> createSkill(@RequestBody Skill skill) {
+    @PostMapping("/")
+    public ResponseEntity<Skill> createSkill(@RequestBody Skill skill){
         return ResponseEntity.ok(skillService.createSkill(skill));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Skill> updateSkill(@PathVariable Long id, @RequestBody Skill skill) {
+    public ResponseEntity<Skill> updateSkill(@PathVariable Long id, @RequestBody Skill skill){
         return ResponseEntity.ok(skillService.updateSkill(id, skill));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Skill> getSkill(@PathVariable Long id) {
+    public ResponseEntity<Skill> getSkill(@PathVariable Long id){
         return ResponseEntity.ok(skillService.getSkillById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Skill>> getAllSkills() {
+    @GetMapping("/")
+    public ResponseEntity<List<Skill>> getAllSkills(){
         return ResponseEntity.ok(skillService.getAllSkills());
     }
 
     @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivateSkill(@PathVariable Long id) {
+    public ResponseEntity<Void> deactivateSkill(@PathVariable Long id){
         skillService.deactivateSkill(id);
         return ResponseEntity.ok().build();
     }

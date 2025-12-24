@@ -17,13 +17,13 @@ public class EmployeeSkillController {
         this.employeeSkillService = employeeSkillService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<EmployeeSkill> createMapping(@RequestBody EmployeeSkill mapping){
         return ResponseEntity.ok(employeeSkillService.createEmployeeSkill(mapping));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeSkill> updateMapping(@PathVariable Long id, @RequestBody EmployeeSkill mapping){
+    public ResponseEntity<EmployeeSkill> updateMapping(@PathVariable Long id,@RequestBody EmployeeSkill mapping){
         return ResponseEntity.ok(employeeSkillService.updateEmployeeSkill(id, mapping));
     }
 
