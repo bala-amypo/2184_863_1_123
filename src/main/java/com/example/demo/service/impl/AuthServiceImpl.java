@@ -7,7 +7,8 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
-import com.example.demo.util.JwtUtil;
+import com.example.demo.security.JwtTokenProvider;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +17,15 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthServiceImpl(UserRepository userRepository,
-                           BCryptPasswordEncoder passwordEncoder,
-                           JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-    }
+public AuthServiceImpl(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
+    this.userRepository = userRepository;
+    this.jwtTokenProvider = jwtTokenProvider;
+}
+
+
+   
 
     @Override
     public AuthResponse login(AuthLoginRequest request) {
