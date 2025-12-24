@@ -1,12 +1,22 @@
 package com.example.demo.service;
 
-import com.example.demo.model.EmployeeSkill;
 import java.util.List;
 
+import com.example.demo.model.EmployeeSkill;
+
 public interface EmployeeSkillService {
+
     EmployeeSkill createEmployeeSkill(EmployeeSkill mapping);
+
     EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill mapping);
+
+    EmployeeSkill getEmployeeSkillById(Long id);
+
+    List<EmployeeSkill> getAllEmployeeSkills();
+
     List<EmployeeSkill> getSkillsForEmployee(Long employeeId);
+
     List<EmployeeSkill> getEmployeesBySkill(Long skillId);
+
     void deactivateEmployeeSkill(Long id);
 }
