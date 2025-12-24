@@ -9,32 +9,22 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private final String jwtSecret = "secretKey";
-    private final long jwtExpirationMs = 86400000; // 1 day
+    private final String JWT_SECRET = "secretkey123";
+    private final long JWT_EXPIRATION = 86400000; // 1 day
 
+    // REQUIRED BY TESTS
     public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getEmail()) // email as subject
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }
 
-    // ✅ REQUIRED BY FILTER
-    public String extractUsername(String token) {
-        return getEmailFromToken(token);
-    }
-
-    public String getEmailFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    // ✅ REQUIRED BY FILTER
+    // REQUIRED BY TESTS
     public boolean validateToken(String token, User user) {
         try {
             String email = extractUsername(token);
@@ -44,12 +34,29 @@ public class JwtTokenProvider {
         }
     }
 
+    // REQUIRED BY TESTS
+    public String extractUsername(String token) {
+        return getClaims(token).getSubject();
+    }
+
+    // REQUIRED BY TESTS
+    public Long getUserIdFromToken(String token) {
+        return getClaims(token).get("userId", Long.class);
+    }
+
+    // REQUIRED BY TESTS
+    public String getRoleFromToken(String token) {
+        return getClaims(token).get("role", String.class);
+    }
+
     private boolean isTokenExpired(String token) {
-        Date expiration = Jwts.parser()
-                .setSigningKey(jwtSecret)
+        return getClaims(token).getExpiration().before(new Date());
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(JWT_SECRET)
                 .parseClaimsJws(token)
-                .getBody()
-                .getExpiration();
-        return expiration.before(new Date());
+                .getBody();
     }
 }
