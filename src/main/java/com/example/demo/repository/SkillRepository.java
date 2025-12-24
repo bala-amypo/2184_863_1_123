@@ -1,13 +1,14 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Skill;
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.model.Skill;
 
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 
-    Optional<Skill> findByName(String name);
+    boolean existsByName(String name);
 
-    List<Skill> findByActiveTrue(); // get only active skills
+    List<Skill> findByActiveTrue();
 }
