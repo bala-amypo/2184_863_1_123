@@ -10,8 +10,6 @@ public class ServletConfig {
 
     @Bean
     public ServletRegistrationBean<HelloServlet> helloServlet() {
-        ServletRegistrationBean<HelloServlet> bean =
-                new ServletRegistrationBean<>(new HelloServlet(), "/hello-servlet");
-        return bean;
+        return new ServletRegistrationBean<>(new HelloServlet(), "/hello-servlet");
     }
 }
