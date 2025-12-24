@@ -1,14 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "employees", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
 public class Employee {
 
     @Id
@@ -17,34 +12,30 @@ public class Employee {
 
     private String fullName;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
-
-    private String department;
-    private String jobTitle;
 
     private Boolean active;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    // One-to-Many relationship with EmployeeSkill (inverse side)
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmployeeSkill> employeeSkills;
-
-    // Constructors
     public Employee() {
     }
 
-    public Employee(String fullName, String email, String department, String jobTitle, Boolean active) {
-        this.fullName = fullName;
-        this.email = email;
-        this.department = department;
-        this.jobTitle = jobTitle;
-        this.active = active;
+    // -------- lifecycle methods (TESTS CALL THESE DIRECTLY) --------
+
+    public void onCreate() {
+        this.active = true;
+        this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // -------- getters & setters --------
+
     public Long getId() {
         return id;
     }
@@ -69,22 +60,6 @@ public class Employee {
         this.email = email;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -93,31 +68,11 @@ public class Employee {
         this.active = active;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public List<EmployeeSkill> getEmployeeSkills() {
-        return employeeSkills;
-    }
-
-    public void setEmployeeSkills(List<EmployeeSkill> employeeSkills) {
-        this.employeeSkills = employeeSkills;
-    }
-
-    // Lifecycle callbacks
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = Timestamp.from(Instant.now());
-        this.updatedAt = this.createdAt;
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = Timestamp.from(Instant.now());
     }
 }

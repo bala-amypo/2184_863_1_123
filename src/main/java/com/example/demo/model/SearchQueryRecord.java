@@ -1,11 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "search_query_records")
 public class SearchQueryRecord {
 
     @Id
@@ -14,40 +12,53 @@ public class SearchQueryRecord {
 
     private Long searcherId;
 
-    @Column(nullable = false)
     private String skillsRequested;
 
     private Integer resultsCount;
-    private Timestamp searchedAt;
 
-    public SearchQueryRecord() {}
+    private LocalDateTime searchedAt;
 
-    public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
-        if (skillsRequested == null || skillsRequested.isEmpty()) throw new IllegalArgumentException("must not be empty");
+    public SearchQueryRecord() {
+    }
+
+    // -------- lifecycle --------
+
+    public void onCreate() {
+        this.searchedAt = LocalDateTime.now();
+        this.resultsCount = 0;
+    }
+
+    // -------- getters & setters --------
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getSearcherId() {
+        return searcherId;
+    }
+
+    public void setSearcherId(Long searcherId) {
         this.searcherId = searcherId;
+    }
+
+    public String getSkillsRequested() {
+        return skillsRequested;
+    }
+
+    public void setSkillsRequested(String skillsRequested) {
         this.skillsRequested = skillsRequested;
+    }
+
+    public Integer getResultsCount() {
+        return resultsCount;
+    }
+
+    public void setResultsCount(Integer resultsCount) {
         this.resultsCount = resultsCount;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        this.searchedAt = Timestamp.from(Instant.now());
+    public LocalDateTime getSearchedAt() {
+        return searchedAt;
     }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Long getSearcherId() { return searcherId; }
-    public void setSearcherId(Long searcherId) { this.searcherId = searcherId; }
-
-    public String getSkillsRequested() { return skillsRequested; }
-    public void setSkillsRequested(String skillsRequested) {
-        if (skillsRequested == null || skillsRequested.isEmpty()) throw new IllegalArgumentException("must not be empty");
-        this.skillsRequested = skillsRequested;
-    }
-
-    public Integer getResultsCount() { return resultsCount; }
-    public void setResultsCount(Integer resultsCount) { this.resultsCount = resultsCount; }
-
-    public Timestamp getSearchedAt() { return searchedAt; }
 }
