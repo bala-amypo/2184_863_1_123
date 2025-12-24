@@ -10,20 +10,39 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String role;
 
     private Boolean active = true;
 
-    public User() {}
+    public User() {
+    }
+
+    // ---------- getters & setters ----------
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -32,6 +51,11 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // Used by JWT & Spring Security
+    public String getUsername() {
+        return email;
     }
 
     public String getPassword() {

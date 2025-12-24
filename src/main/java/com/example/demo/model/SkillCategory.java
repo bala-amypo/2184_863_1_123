@@ -3,9 +3,6 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "skill_categories", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "categoryName")
-})
 public class SkillCategory {
 
     @Id
@@ -15,26 +12,34 @@ public class SkillCategory {
     @Column(unique = true, nullable = false)
     private String categoryName;
 
-    private String description;
     private Boolean active = true;
 
-    public SkillCategory() {}
-
-    public SkillCategory(String categoryName, String description, Boolean active) {
-        this.categoryName = categoryName;
-        this.description = description;
-        this.active = active;
+    public SkillCategory() {
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // -------- getters & setters --------
 
-    public String getCategoryName() { return categoryName; }
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
