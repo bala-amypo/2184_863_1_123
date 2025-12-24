@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.EmployeeSearchRequest;
 import com.example.demo.model.Employee;
-import com.example.demo.model.SearchQueryRecord;
-import com.example.demo.service.SearchQueryService;
+import com.example.demo.service.EmployeeSearchService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,28 +11,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/search")
-public class SearchQueryController {
+public class EmployeeSearchController {
 
-    private final SearchQueryService searchQueryService;
+    private final EmployeeSearchService employeeSearchService;
 
-    public SearchQueryController(SearchQueryService searchQueryService) {
-        this.searchQueryService = searchQueryService;
+    public EmployeeSearchController(EmployeeSearchService employeeSearchService) {
+        this.employeeSearchService = employeeSearchService;
     }
 
+    // Search employees
     @PostMapping("/employees")
-    public ResponseEntity<List<Employee>> searchEmployees(@RequestBody EmployeeSearchRequest request,
-                                                          @RequestParam Long userId) {
-        List<Employee> employees = searchQueryService.searchEmployeesBySkills(request.getSkills(), userId);
-        return ResponseEntity.ok(employees);
-    }
+    public ResponseEntity<List<Employee>> searchEmployees(
+            @RequestBody EmployeeSearchRequest request) {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SearchQueryRecord> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(searchQueryService.getQueryById(id));
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<SearchQueryRecord>> getByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(searchQueryService.getQueriesForUser(userId));
+        return ResponseEntity.ok(
+                employeeSearchService.search(request)
+        );
     }
 }

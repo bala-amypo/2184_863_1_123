@@ -17,29 +17,27 @@ public class EmployeeSkillController {
         this.employeeSkillService = employeeSkillService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<EmployeeSkill> create(@RequestBody EmployeeSkill mapping) {
-        return ResponseEntity.ok(employeeSkillService.createEmployeeSkill(mapping));
+    // Add skill to employee
+    @PostMapping
+    public ResponseEntity<EmployeeSkill> add(
+            @RequestBody EmployeeSkill employeeSkill) {
+
+        return ResponseEntity.ok(employeeSkillService.add(employeeSkill));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EmployeeSkill> update(@PathVariable Long id, @RequestBody EmployeeSkill mapping) {
-        return ResponseEntity.ok(employeeSkillService.updateEmployeeSkill(id, mapping));
+    // Get all employee skills
+    @GetMapping
+    public ResponseEntity<List<EmployeeSkill>> getAll() {
+        return ResponseEntity.ok(employeeSkillService.getAll());
     }
 
+    // Get skills by employee id
     @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<List<EmployeeSkill>> getSkillsForEmployee(@PathVariable Long employeeId) {
-        return ResponseEntity.ok(employeeSkillService.getSkillsForEmployee(employeeId));
-    }
+    public ResponseEntity<List<EmployeeSkill>> getByEmployeeId(
+            @PathVariable Long employeeId) {
 
-    @GetMapping("/skill/{skillId}")
-    public ResponseEntity<List<EmployeeSkill>> getEmployeesBySkill(@PathVariable Long skillId) {
-        return ResponseEntity.ok(employeeSkillService.getEmployeesBySkill(skillId));
-    }
-
-    @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
-        employeeSkillService.deactivateEmployeeSkill(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                employeeSkillService.getByEmployeeId(employeeId)
+        );
     }
 }

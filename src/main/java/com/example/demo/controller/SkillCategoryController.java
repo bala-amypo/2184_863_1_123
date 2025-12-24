@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SkillCategory;
 import com.example.demo.service.SkillCategoryService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,29 +18,23 @@ public class SkillCategoryController {
         this.skillCategoryService = skillCategoryService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<SkillCategory> create(@RequestBody SkillCategory category) {
-        return ResponseEntity.ok(skillCategoryService.createCategory(category));
+    // ✅ Create category
+    @PostMapping
+    public ResponseEntity<SkillCategory> create(
+            @RequestBody SkillCategory category) {
+
+        return ResponseEntity.ok(skillCategoryService.create(category));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SkillCategory> update(@PathVariable Long id, @RequestBody SkillCategory category) {
-        return ResponseEntity.ok(skillCategoryService.updateCategory(id, category));
+    // ✅ Get all categories
+    @GetMapping
+    public ResponseEntity<List<SkillCategory>> getAll() {
+        return ResponseEntity.ok(skillCategoryService.getAll());
     }
 
+    // ✅ Get by ID
     @GetMapping("/{id}")
     public ResponseEntity<SkillCategory> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(skillCategoryService.getCategoryById(id));
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<List<SkillCategory>> getAll() {
-        return ResponseEntity.ok(skillCategoryService.getAllCategories());
-    }
-
-    @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
-        skillCategoryService.deactivateCategory(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(skillCategoryService.getById(id));
     }
 }
