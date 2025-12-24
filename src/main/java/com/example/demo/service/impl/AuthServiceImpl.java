@@ -18,7 +18,8 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public AuthServiceImpl(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
+    public AuthServiceImpl(UserRepository userRepository,
+                           JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = new BCryptPasswordEncoder();
@@ -26,27 +27,31 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(AuthRegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already in use");
+
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
         }
 
         User user = new User();
-        user.setUsername(request.getEmail());
-        user.setEmail(request.getEmail());
-        user.setFullName(request.getFullName());
+        user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole() != null ? request.getRole() : "USER");
+        user.setRole("USER");
 
         User savedUser = userRepository.save(user);
-
         String token = jwtTokenProvider.generateToken(savedUser);
 
-        return new AuthResponse(token, savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
+        return new AuthResponse(
+                token,
+                savedUser.getId(),
+                savedUser.getUsername(),
+                savedUser.getRole()
+        );
     }
 
     @Override
     public AuthResponse login(AuthLoginRequest request) {
-        User user = userRepository.findByEmail(request.getUsername())
+
+        User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -55,6 +60,11 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtTokenProvider.generateToken(user);
 
-        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
+        return new AuthResponse(
+                token,
+                user.getId(),
+                user.getUsername(),
+                user.getRole()
+        );
     }
 }
