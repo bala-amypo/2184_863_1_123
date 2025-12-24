@@ -13,31 +13,33 @@ public class EmployeeSkillController {
 
     private final EmployeeSkillService employeeSkillService;
 
-    public EmployeeSkillController(EmployeeSkillService employeeSkillService) {
+    public EmployeeSkillController(EmployeeSkillService employeeSkillService){
         this.employeeSkillService = employeeSkillService;
     }
 
-    // Add skill to employee
     @PostMapping
-    public ResponseEntity<EmployeeSkill> add(
-            @RequestBody EmployeeSkill employeeSkill) {
-
-        return ResponseEntity.ok(employeeSkillService.add(employeeSkill));
+    public ResponseEntity<EmployeeSkill> createMapping(@RequestBody EmployeeSkill mapping){
+        return ResponseEntity.ok(employeeSkillService.createEmployeeSkill(mapping));
     }
 
-    // Get all employee skills
-    @GetMapping
-    public ResponseEntity<List<EmployeeSkill>> getAll() {
-        return ResponseEntity.ok(employeeSkillService.getAll());
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeSkill> updateMapping(@PathVariable Long id, @RequestBody EmployeeSkill mapping){
+        return ResponseEntity.ok(employeeSkillService.updateEmployeeSkill(id, mapping));
     }
 
-    // Get skills by employee id
     @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<List<EmployeeSkill>> getByEmployeeId(
-            @PathVariable Long employeeId) {
+    public ResponseEntity<List<EmployeeSkill>> getSkillsForEmployee(@PathVariable Long employeeId){
+        return ResponseEntity.ok(employeeSkillService.getSkillsForEmployee(employeeId));
+    }
 
-        return ResponseEntity.ok(
-                employeeSkillService.getByEmployeeId(employeeId)
-        );
+    @GetMapping("/skill/{skillId}")
+    public ResponseEntity<List<EmployeeSkill>> getEmployeesBySkill(@PathVariable Long skillId){
+        return ResponseEntity.ok(employeeSkillService.getEmployeesBySkill(skillId));
+    }
+
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivateMapping(@PathVariable Long id){
+        employeeSkillService.deactivateEmployeeSkill(id);
+        return ResponseEntity.ok().build();
     }
 }
