@@ -1,24 +1,30 @@
 package com.example.demo.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.example.demo.model.EmployeeSkill;
+import com.example.demo.service.EmployeeSkillService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/employee-skills")
 public class EmployeeSkillController {
 
-    private final List<Map<String, Object>> employeeSkills = new ArrayList<>();
+    private final EmployeeSkillService employeeSkillService;
 
-    @PostMapping("/")
-    public ResponseEntity<Map<String, Object>> addSkill(@RequestBody Map<String, Object> skill) {
-        employeeSkills.add(skill);
-        return ResponseEntity.ok(skill);
+    public EmployeeSkillController(EmployeeSkillService employeeSkillService) {
+        this.employeeSkillService = employeeSkillService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Map<String, Object>>> getSkills() {
-        return ResponseEntity.ok(employeeSkills);
+    // Get skills by employee id
+    @GetMapping("/employee/{employeeId}")
+    public List<EmployeeSkill> getSkillsByEmployee(@PathVariable Long employeeId) {
+        return employeeSkillService.getSkillsByEmployeeId(employeeId);
+    }
+
+    // Get employees by skill id
+    @GetMapping("/skill/{skillId}")
+    public List<EmployeeSkill> getEmployeesBySkill(@PathVariable Long skillId) {
+        return employeeSkillService.getEmployeesBySkillId(skillId);
     }
 }

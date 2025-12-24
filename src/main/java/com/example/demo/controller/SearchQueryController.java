@@ -1,24 +1,24 @@
 package com.example.demo.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.example.demo.model.Employee;
+import com.example.demo.service.SearchQueryService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/search-queries")
+@RequestMapping("/api/search")
 public class SearchQueryController {
 
-    private final List<Map<String, Object>> queries = new ArrayList<>();
+    private final SearchQueryService searchQueryService;
 
-    @PostMapping("/")
-    public ResponseEntity<Map<String, Object>> addQuery(@RequestBody Map<String, Object> query) {
-        queries.add(query);
-        return ResponseEntity.ok(query);
+    public SearchQueryController(SearchQueryService searchQueryService) {
+        this.searchQueryService = searchQueryService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Map<String, Object>>> getQueries() {
-        return ResponseEntity.ok(queries);
+    // Find employees by list of skill names
+    @PostMapping("/employees")
+    public List<Employee> findEmployeesBySkills(@RequestBody List<String> skills) {
+        return searchQueryService.findEmployeesByAllSkills(skills);
     }
 }
