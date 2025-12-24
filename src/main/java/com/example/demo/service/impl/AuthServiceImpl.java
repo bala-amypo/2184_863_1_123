@@ -29,8 +29,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse register(AuthRegisterRequest request) {
 
         User user = new User();
-        user.setEmail(request.getEmail());          // ✅ FIX
-        user.setFullName(request.getFullName());
+        user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole("USER");
         user.setActive(true);
@@ -39,13 +38,13 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtTokenProvider.generateToken(savedUser);
 
-        return new AuthResponse(token, savedUser.getEmail());
+        return new AuthResponse(token, savedUser.getUsername());
     }
 
     @Override
     public AuthResponse login(AuthLoginRequest request) {
 
-        User user = userRepository.findByEmail(request.getEmail())   // ✅ FIX
+        User user = userRepository.findByEmail(request.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -54,6 +53,6 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtTokenProvider.generateToken(user);
 
-        return new AuthResponse(token, user.getEmail());
+        return new AuthResponse(token, user.getUsername());
     }
 }
