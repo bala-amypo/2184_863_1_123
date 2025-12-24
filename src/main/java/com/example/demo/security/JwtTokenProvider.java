@@ -1,10 +1,9 @@
-import com.example.demo.security.JwtTokenProvider;
+package com.example.demo.security;
 
 import com.example.demo.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 
 @Component
@@ -15,7 +14,7 @@ public class JwtTokenProvider {
 
     public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getUsername())
+                .setSubject(user.getEmail())
                 .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
@@ -32,6 +31,6 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token, User user) {
-        return extractUsername(token).equals(user.getUsername());
+        return extractUsername(token).equals(user.getEmail());
     }
 }
