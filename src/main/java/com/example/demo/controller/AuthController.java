@@ -9,7 +9,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        // Return a dummy token for now
+        // Dummy login token
         return ResponseEntity.ok("dummy-token");
     }
 
