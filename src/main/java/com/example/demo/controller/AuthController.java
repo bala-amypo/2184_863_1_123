@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    // Dummy login endpoint
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        // For now, return a dummy token
+        // Return a dummy token for now
         return ResponseEntity.ok("dummy-token");
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestParam String username, @RequestParam String password) {
+        // Dummy registration
+        return ResponseEntity.ok("user-registered");
     }
 }

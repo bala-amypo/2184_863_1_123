@@ -1,39 +1,26 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.EmployeeSearchRequest;
-import com.example.demo.model.Employee;
-import com.example.demo.model.SearchQueryRecord;
-import com.example.demo.service.SearchQueryService;
+import com.example.demo.model.SearchQuery;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/search")
+@RequestMapping("/api/search-queries")
 public class SearchQueryController {
 
-    private final SearchQueryService searchQueryService;
+    private final List<SearchQuery> queries = new ArrayList<>();
 
-    public SearchQueryController(SearchQueryService searchQueryService) {
-        this.searchQueryService = searchQueryService;
+    @PostMapping("/")
+    public ResponseEntity<SearchQuery> addQuery(@RequestBody SearchQuery query) {
+        queries.add(query);
+        return ResponseEntity.ok(query);
     }
 
-    @PostMapping("/employees")
-    public List<Employee> searchEmployees(
-            @RequestBody EmployeeSearchRequest request,
-            @RequestParam Long userId) {
-
-        return searchQueryService.searchEmployeesBySkills(
-                request.getSkills(), userId);
-    }
-
-    @GetMapping("/{id}")
-    public SearchQueryRecord getById(@PathVariable Long id) {
-        return searchQueryService.getQueryById(id);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<SearchQueryRecord> getByUser(@PathVariable Long userId) {
-        return searchQueryService.getQueriesForUser(userId);
+    @GetMapping("/")
+    public ResponseEntity<List<SearchQuery>> getQueries() {
+        return ResponseEntity.ok(queries);
     }
 }
