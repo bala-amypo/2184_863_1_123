@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.service.EmployeeSkillService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,15 +17,29 @@ public class EmployeeSkillController {
         this.employeeSkillService = employeeSkillService;
     }
 
-    // Get skills by employee id
-    @GetMapping("/employee/{employeeId}")
-    public List<EmployeeSkill> getSkillsByEmployee(@PathVariable Long employeeId) {
-        return employeeSkillService.getSkillsByEmployeeId(employeeId);
+    @PostMapping("/")
+    public ResponseEntity<EmployeeSkill> create(@RequestBody EmployeeSkill mapping) {
+        return ResponseEntity.ok(employeeSkillService.createEmployeeSkill(mapping));
     }
 
-    // Get employees by skill id
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeSkill> update(@PathVariable Long id, @RequestBody EmployeeSkill mapping) {
+        return ResponseEntity.ok(employeeSkillService.updateEmployeeSkill(id, mapping));
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public ResponseEntity<List<EmployeeSkill>> getSkillsForEmployee(@PathVariable Long employeeId) {
+        return ResponseEntity.ok(employeeSkillService.getSkillsForEmployee(employeeId));
+    }
+
     @GetMapping("/skill/{skillId}")
-    public List<EmployeeSkill> getEmployeesBySkill(@PathVariable Long skillId) {
-        return employeeSkillService.getEmployeesBySkillId(skillId);
+    public ResponseEntity<List<EmployeeSkill>> getEmployeesBySkill(@PathVariable Long skillId) {
+        return ResponseEntity.ok(employeeSkillService.getEmployeesBySkill(skillId));
+    }
+
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
+        employeeSkillService.deactivateEmployeeSkill(id);
+        return ResponseEntity.noContent().build();
     }
 }
