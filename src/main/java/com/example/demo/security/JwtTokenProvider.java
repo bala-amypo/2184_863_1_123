@@ -1,62 +1,65 @@
 package com.example.demo.security;
 
-import com.example.demo.model.User;
 import io.jsonwebtoken.*;
-import org.springframework.stereotype.Component;
+import io.jsonwebtoken.security.Keys;
 
+import java.security.Key;
 import java.util.Date;
 
-@Component
 public class JwtTokenProvider {
 
-    private final String JWT_SECRET = "secretkey123";
-    private final long JWT_EXPIRATION = 86400000; // 1 day
+    private static final String SECRET =
+            "ThisIsASecretKeyForJwtGenerationThisIsASecretKeyForJwtGeneration";
+    private static final long EXPIRATION = 24 * 60 * 60 * 1000; // 24 hours
 
-    // REQUIRED BY TESTS
-    public String generateToken(User user) {
+    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+
+    // ✅ Generate token
+    public String generateToken(Long userId, String email, String role) {
         return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("userId", user.getId())
-                .claim("role", user.getRole())
+                .setSubject(email)
+                .claim("userId", userId)
+                .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // REQUIRED BY TESTS
-    public boolean validateToken(String token, User user) {
+    // ✅ Validate token
+    public boolean validateToken(String token) {
         try {
-            String email = extractUsername(token);
-            return email.equals(user.getEmail()) && !isTokenExpired(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-    // REQUIRED BY TESTS
-    public String extractUsername(String token) {
+    // ✅ Get claims
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    // ✅ Extract email
+    public String getEmailFromToken(String token) {
         return getClaims(token).getSubject();
     }
 
-    // REQUIRED BY TESTS
+    // ✅ Extract userId
     public Long getUserIdFromToken(String token) {
         return getClaims(token).get("userId", Long.class);
     }
 
-    // REQUIRED BY TESTS
+    // ✅ Extract role
     public String getRoleFromToken(String token) {
         return getClaims(token).get("role", String.class);
-    }
-
-    private boolean isTokenExpired(String token) {
-        return getClaims(token).getExpiration().before(new Date());
-    }
-
-    private Claims getClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(JWT_SECRET)
-                .parseClaimsJws(token)
-                .getBody();
     }
 }
