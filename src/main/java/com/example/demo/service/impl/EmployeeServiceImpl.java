@@ -1,12 +1,12 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -19,38 +19,39 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee createEmployee(Employee employee) {
-        employeeRepository.findByEmail(employee.getEmail())
-                .ifPresent(e -> { throw new IllegalArgumentException("Email already exists"); });
-        if (employee.getActive() == null) employee.setActive(true);
         return employeeRepository.save(employee);
     }
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
-        Employee existing = getEmployeeById(id);
+        Employee existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
         existing.setFullName(employee.getFullName());
         existing.setEmail(employee.getEmail());
         existing.setDepartment(employee.getDepartment());
         existing.setJobTitle(employee.getJobTitle());
-        existing.setActive(employee.getActive());
+
         return employeeRepository.save(existing);
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findByActiveTrue();
+        return employeeRepository.findAll();
     }
 
     @Override
     public void deactivateEmployee(Long id) {
-        Employee existing = getEmployeeById(id);
-        existing.setActive(false);
-        employeeRepository.save(existing);
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        employee.setActive(false);
+        employeeRepository.save(employee);
     }
 }

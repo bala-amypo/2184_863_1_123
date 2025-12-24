@@ -1,6 +1,10 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
 import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.model.Skill;
@@ -8,10 +12,6 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.EmployeeSkillService;
-import com.example.demo.util.ProficiencyValidator;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EmployeeSkillServiceImpl implements EmployeeSkillService {
@@ -19,6 +19,9 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     private final EmployeeSkillRepository employeeSkillRepository;
     private final EmployeeRepository employeeRepository;
     private final SkillRepository skillRepository;
+
+    private static final Set<String> VALID_PROFICIENCY =
+            Set.of("Beginner", "Intermediate", "Advanced");
 
     public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
                                     EmployeeRepository employeeRepository,
@@ -29,64 +32,47 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
-    public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
-        validateMapping(mapping);
-        mapping.setActive(true);
-        return employeeSkillRepository.save(mapping);
-    }
+    public EmployeeSkill createEmployeeSkill(EmployeeSkill es) {
 
-    @Override
-    public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill mapping) {
-        EmployeeSkill existing = employeeSkillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("EmployeeSkill not found"));
+        Employee emp = employeeRepository.findById(es.getEmployee().getId())
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
 
-        validateMapping(mapping);
+        Skill skill = skillRepository.findById(es.getSkill().getId())
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
 
-        existing.setEmployee(mapping.getEmployee());
-        existing.setSkill(mapping.getSkill());
-        existing.setProficiencyLevel(mapping.getProficiencyLevel());
-        existing.setYearsOfExperience(mapping.getYearsOfExperience());
-        return employeeSkillRepository.save(existing);
+        if (!emp.getActive()) {
+            throw new IllegalArgumentException("inactive employee");
+        }
+        if (!skill.getActive()) {
+            throw new IllegalArgumentException("inactive skill");
+        }
+        if (es.getYearsOfExperience() < 0) {
+            throw new IllegalArgumentException("Experience years must be positive");
+        }
+        if (!VALID_PROFICIENCY.contains(es.getProficiencyLevel())) {
+            throw new IllegalArgumentException("Invalid proficiency");
+        }
+
+        es.setActive(true);
+        return employeeSkillRepository.save(es);
     }
 
     @Override
     public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
-        employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
         return employeeSkillRepository.findByEmployeeIdAndActiveTrue(employeeId);
     }
 
     @Override
     public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
-        skillRepository.findById(skillId)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
         return employeeSkillRepository.findBySkillIdAndActiveTrue(skillId);
     }
 
     @Override
     public void deactivateEmployeeSkill(Long id) {
-        EmployeeSkill existing = employeeSkillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("EmployeeSkill not found"));
-        existing.setActive(false);
-        employeeSkillRepository.save(existing);
-    }
+        EmployeeSkill es = employeeSkillRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mapping not found"));
 
-    // --- Validation Logic ---
-    private void validateMapping(EmployeeSkill mapping) {
-        ProficiencyValidator.validate(mapping.getProficiencyLevel());
-
-        Employee employee = mapping.getEmployee();
-        if (employee == null || !employee.getActive()) {
-            throw new IllegalArgumentException("inactive employee");
-        }
-
-        Skill skill = mapping.getSkill();
-        if (skill == null || !skill.getActive()) {
-            throw new IllegalArgumentException("inactive skill");
-        }
-
-        if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
-            throw new IllegalArgumentException("Experience years");
-        }
+        es.setActive(false);
+        employeeSkillRepository.save(es);
     }
 }
