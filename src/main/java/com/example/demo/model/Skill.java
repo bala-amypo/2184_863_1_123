@@ -1,44 +1,45 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
+@Table(name = "skills", uniqueConstraints = @UniqueConstraint(columnNames = "skillName"))
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @NotBlank
+    private String skillCode;
 
-    private Boolean active = true;
+    @NotBlank
+    @Column(unique = true)
+    private String skillName;
 
-    public Skill() {
+    @NotBlank
+    private String category; // Technical / Functional
+
+    // Constructors
+    public Skill() {}
+
+    public Skill(String skillCode, String skillName, String category) {
+        this.skillCode = skillCode;
+        this.skillName = skillName;
+        this.category = category;
     }
 
-    // -------- getters & setters --------
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getSkillCode() { return skillCode; }
+    public void setSkillCode(String skillCode) { this.skillCode = skillCode; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getSkillName() { return skillName; }
+    public void setSkillName(String skillName) { this.skillName = skillName; }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 }
