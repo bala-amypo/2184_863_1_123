@@ -17,8 +17,8 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
-    public EmployeeSkill add(EmployeeSkill employeeSkill) {
-        return repo.save(employeeSkill);
+    public EmployeeSkill add(EmployeeSkill skill) {
+        return repo.save(skill);
     }
 
     @Override
@@ -28,6 +28,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public List<EmployeeSkill> getByEmployeeId(Long employeeId) {
-        return repo.findByEmployeeId(employeeId);
+        // Use the existing repository method
+        return repo.findByEmployeeIdAndActiveTrue(employeeId);
     }
 }

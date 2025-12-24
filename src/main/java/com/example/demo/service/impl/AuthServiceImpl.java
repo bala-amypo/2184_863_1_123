@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.AuthRegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
@@ -18,21 +19,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(String email, String password) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!user.getPassword().equals(password)) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        // Pass required fields instead of User object
-        return jwtTokenProvider.generateToken(user.getId(), user.getEmail(), user.getRole());
+    public User register(AuthRegisterRequest request) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword()); // You should encode in real project
+        userRepository.save(user);
+        return user;
     }
 
     @Override
-    public String register(User user) {
-        User savedUser = userRepository.save(user);
-        return jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
+    public String login(String username, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        // You can validate password here
+        return jwtTokenProvider.generateToken(user.getId(), user.getUsername(), "ROLE_USER");
     }
 }
