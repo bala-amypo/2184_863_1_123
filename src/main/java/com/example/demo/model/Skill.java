@@ -14,13 +14,11 @@ public class Skill{
 
     @Column(unique = true)
     private String name;
+    
+    private String category;
 
     private String description;
     private Boolean active = true;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private SkillCategory category;
     
     @OneToMany(mappedBy = "skill", fetch = FetchType.LAZY)
     private List<EmployeeSkill> employeeSkills;
@@ -51,10 +49,10 @@ public class Skill{
     public void setName(String name){
         this.name = name;
     }
-    public SkillCategory getCategory(){
+    public String getCategory(){
         return category;
     }
-    public void setCategory(SkillCategory category){
+    public void setCategory(String category){
         this.category = category;
     }
     public String getDescription(){
