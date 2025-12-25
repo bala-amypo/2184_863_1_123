@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "skill_categories")
@@ -18,9 +17,6 @@ public class SkillCategory {
     private String description;
 
     private Boolean active = true;
-    
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Skill> skills;
     
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -61,9 +57,7 @@ public class SkillCategory {
         this.active = active;
     }
     
-    public List<Skill> getSkills() { return skills; }
-    public void setSkills(List<Skill> skills) { this.skills = skills; }
-    
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     

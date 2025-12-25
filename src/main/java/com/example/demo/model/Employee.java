@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class Employee{
     private LocalDateTime updatedAt;
     
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<EmployeeSkill> employeeSkills;
 
     @PrePersist
