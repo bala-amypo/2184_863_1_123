@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "employees")
@@ -26,8 +25,7 @@ public class Employee{
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     
-    @OneToMany(mappedBy = "employee")
-    @JsonIgnore
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<EmployeeSkill> employeeSkills;
 
     @PrePersist

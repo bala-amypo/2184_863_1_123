@@ -3,7 +3,6 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "skills")
@@ -19,12 +18,11 @@ public class Skill{
     private String description;
     private Boolean active = true;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private SkillCategory category;
     
-    @OneToMany(mappedBy = "skill")
-    @JsonIgnore
+    @OneToMany(mappedBy = "skill", fetch = FetchType.LAZY)
     private List<EmployeeSkill> employeeSkills;
     
     private LocalDateTime createdAt;

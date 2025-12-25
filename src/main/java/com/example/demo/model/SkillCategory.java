@@ -3,7 +3,6 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "skill_categories")
@@ -20,8 +19,7 @@ public class SkillCategory {
 
     private Boolean active = true;
     
-    @OneToMany(mappedBy = "category")
-    @JsonIgnore
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Skill> skills;
     
     private LocalDateTime createdAt;
