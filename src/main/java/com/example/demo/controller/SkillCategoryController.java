@@ -26,7 +26,7 @@ public class SkillCategoryController {
     }
 
     @PostMapping("/")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<SkillCategory> createCategory(@RequestBody SkillCategory category){
         return ResponseEntity.ok(skillCategoryService.createCategory(category));
     }
@@ -38,13 +38,13 @@ public class SkillCategoryController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<SkillCategory> getCategory(@PathVariable Long id){
         return ResponseEntity.ok(skillCategoryService.getCategoryById(id));
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<SkillCategory>> getAllCategories(){
         return ResponseEntity.ok(skillCategoryService.getAllCategories());
     }

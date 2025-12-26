@@ -26,7 +26,7 @@ public class EmployeeSkillController {
     }
 
     @PostMapping("/")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EmployeeSkill> createMapping(@RequestBody EmployeeSkill mapping){
         return ResponseEntity.ok(employeeSkillService.createEmployeeSkill(mapping));
     }
@@ -38,13 +38,13 @@ public class EmployeeSkillController {
     }
 
     @GetMapping("/employee/{employeeId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<EmployeeSkill>> getSkillsForEmployee(@PathVariable Long employeeId){
         return ResponseEntity.ok(employeeSkillService.getSkillsForEmployee(employeeId));
     }
 
     @GetMapping("/skill/{skillId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<EmployeeSkill>> getEmployeesBySkill(@PathVariable Long skillId){
         return ResponseEntity.ok(employeeSkillService.getEmployeesBySkill(skillId));
     }
