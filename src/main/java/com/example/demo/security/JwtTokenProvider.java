@@ -13,9 +13,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
-
-    // Fixed secret for jwt.io validation - must be at least 256 bits
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60; 
     private static final String SECRET = "sdjhgbwubwwbgwiub8QFQ8qg87G1bfewifbiuwg7iu8wefqhjk";
     private static final SecretKey KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 

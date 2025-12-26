@@ -31,7 +31,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String email = jwtUtil.getEmailFromToken(token);
             String role = jwtUtil.getRoleFromToken(token);
             
-            // Create authentication with role-based authority
             List<SimpleGrantedAuthority> authorities = List.of(
                 new SimpleGrantedAuthority("ROLE_" + role.toUpperCase())
             );
