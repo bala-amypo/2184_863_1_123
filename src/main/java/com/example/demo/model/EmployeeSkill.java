@@ -1,108 +1,105 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "employee_skills")
-public class EmployeeSkill {
+@Table(name = "employees")
+public class Employee{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    private String fullName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    @Column(unique = true)
+    private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "skill_id")
-    private Skill skill;
-
-    private String proficiencyLevel;
-
-    private Integer yearsOfExperience;
+    private String department;
+    private String jobTitle;
 
     private Boolean active = true;
-    
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<EmployeeSkill> employeeSkills;
+
     @PrePersist
-    protected void onCreate() {
+    public void onCreate(){
         createdAt = LocalDateTime.now();
         if (active == null) active = true;
     }
-    
     @PreUpdate
-    protected void onUpdate() {
+    public void onUpdate(){
         updatedAt = LocalDateTime.now();
     }
 
-    
-    public Long getId() {
+    public Long getId(){
         return id;
     }
-
-    public void setId(Long id) {
+    public void setId(Long id){
         this.id = id;
     }
-
-    public Employee getEmployee() {
-        return employee;
+    public String getFullName(){
+        return fullName;
     }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setFullName(String fullName){
+        this.fullName = fullName;
     }
-
-    public Skill getSkill() {
-        return skill;
+    public String getEmail(){
+        return email;
     }
-
-    public void setSkill(Skill skill) {
-        this.skill = skill;
+    public void setEmail(String email){
+        this.email = email;
     }
-
-    public String getProficiencyLevel() {
-        return proficiencyLevel;
+    public String getDepartment(){
+        return department;
     }
-
-    public void setProficiencyLevel(String proficiencyLevel) {
-        this.proficiencyLevel = proficiencyLevel;
+    public void setDepartment(String department){
+        this.department = department;
     }
-
-    public Integer getYearsOfExperience() {
-        return yearsOfExperience;
+    public String getJobTitle(){
+        return jobTitle;
     }
-
-    public void setYearsOfExperience(Integer yearsOfExperience) {
-        this.yearsOfExperience = yearsOfExperience;
+    public void setJobTitle(String jobTitle){
+        this.jobTitle = jobTitle;
     }
-
-    public Boolean getActive() {
+    public Boolean getActive(){
         return active;
     }
-
-    public void setActive(Boolean active) {
+    public void setActive(Boolean active){
         this.active = active;
     }
-    
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-    
-    public EmployeeSkill() {
+    public LocalDateTime getCreatedAt(){
+        return createdAt;
     }
+    public void setCreatedAt(LocalDateTime createdAt){
+        this.createdAt = createdAt;
+    }
+    public LocalDateTime getUpdatedAt(){
+        return updatedAt;
+    }
+    public void setUpdatedAt(LocalDateTime updatedAt){
+        this.updatedAt = updatedAt;
+    }
+    
+    public List<EmployeeSkill> getEmployeeSkills() { return employeeSkills; }
+    public void setEmployeeSkills(List<EmployeeSkill> employeeSkills) { this.employeeSkills = employeeSkills; }
 
-    public EmployeeSkill(Long id,Employee employee, Skill skill,String proficiencyLevel, Integer yearsOfExperience) {
+    public Employee(){}
+
+    public Employee(Long id,String fullName,String email,String department,String jobTitle,Boolean active){
         this.id = id;
-        this.employee = employee;
-        this.skill = skill;
-        this.proficiencyLevel = proficiencyLevel;
-        this.yearsOfExperience = yearsOfExperience;
-        this.active = true;
+        this.fullName = fullName;
+        this.email = email;
+        this.department = department;
+        this.jobTitle = jobTitle;
+        this.active = active;
     }
 }
-
