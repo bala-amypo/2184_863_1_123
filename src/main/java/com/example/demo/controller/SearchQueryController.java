@@ -4,6 +4,7 @@ import com.example.demo.model.Employee;
 import com.example.demo.model.SearchQueryRecord;
 import com.example.demo.service.SearchQueryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,19 +20,21 @@ public class SearchQueryController {
     }
 
     @PostMapping("/employees")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<List<Employee>> searchEmployees(@RequestBody com.example.demo.dto.EmployeeSearchRequest request){
-        // For testing purposes, using a default searcherId
         Long searcherId = 1L;
         List<Employee> result = searchQueryService.searchEmployeesBySkills(request.getSkills(), searcherId);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<SearchQueryRecord> getQuery(@PathVariable Long id){
         return ResponseEntity.ok(searchQueryService.getQueryById(id));
     }
 
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<List<SearchQueryRecord>> getQueriesForUser(@PathVariable Long userId){
         return ResponseEntity.ok(searchQueryService.getQueriesForUser(userId));
     }
