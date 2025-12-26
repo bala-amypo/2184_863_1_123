@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class JwtTokenProvider {
+public class JwtUtil {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
