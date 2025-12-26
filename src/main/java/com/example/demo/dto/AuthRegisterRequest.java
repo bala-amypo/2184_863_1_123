@@ -15,10 +15,16 @@ public class AuthRegisterRequest {
         this.role = role;
     }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
     
-    public String getFullName() { return username; }
+    public String getFullName() {
+        return username;
+        }
     public void setFullName(String fullName) { this.username = fullName; }
 
     public String getEmail() { return email; }
