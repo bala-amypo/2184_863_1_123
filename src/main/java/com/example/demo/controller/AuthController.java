@@ -17,7 +17,7 @@ public class AuthController {
     
     @PostMapping("/register")
     public AuthResponse register(@RequestBody AuthRegisterRequest request) {
-        // Implementation would go here
+        
         return new AuthResponse();
     }
 }
