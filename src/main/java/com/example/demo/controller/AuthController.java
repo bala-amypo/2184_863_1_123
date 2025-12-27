@@ -31,10 +31,10 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthLoginRequest request) {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
         
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.getUsername())
             .orElseThrow(() -> new RuntimeException("User not found"));
             
         String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail(), user.getRole());
@@ -43,7 +43,7 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody AuthRegisterRequest request) {
+    public String register(@RequestBody AuthRegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("User already exists");
         }
@@ -53,10 +53,8 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole() != null ? request.getRole() : "USER");
         
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
         
-        String token = jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
-        
-        return new AuthResponse(token, savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
+        return "Registration successful";
     }
 }
