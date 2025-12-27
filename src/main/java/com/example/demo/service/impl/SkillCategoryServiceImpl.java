@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SkillCategory;
 import com.example.demo.repository.SkillCategoryRepository;
 import com.example.demo.service.SkillCategoryService;
@@ -11,39 +12,48 @@ import com.example.demo.service.SkillCategoryService;
 @Service
 public class SkillCategoryServiceImpl implements SkillCategoryService {
 
-    private final SkillCategoryRepository repo;
+    private final SkillCategoryRepository skillCategoryRepository;
 
-    public SkillCategoryServiceImpl(SkillCategoryRepository repo) {
-        this.repo = repo;
+    public SkillCategoryServiceImpl(SkillCategoryRepository skillCategoryRepository) {
+        this.skillCategoryRepository = skillCategoryRepository;
     }
 
     @Override
     public List<SkillCategory> getAllCategories() {
-        return repo.findAll();
+        return skillCategoryRepository.findAll();
     }
 
     @Override
     public SkillCategory createCategory(SkillCategory category) {
-        return repo.save(category);
+        validateCategory(category);
+        return skillCategoryRepository.save(category);
     }
 
     @Override
     public SkillCategory getCategoryById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("SkillCategory id not found"));
+        return skillCategoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("SkillCategory not found"));
     }
 
     @Override
     public SkillCategory updateCategory(Long id, SkillCategory newCategory) {
         SkillCategory existing = getCategoryById(id);
-        newCategory.setId(existing.getId());
-        return repo.save(newCategory);
+        validateCategory(newCategory);
+        existing.setCategoryName(newCategory.getCategoryName());
+        existing.setDescription(newCategory.getDescription());
+        return skillCategoryRepository.save(existing);
     }
 
     @Override
     public void deactivateCategory(Long id) {
         SkillCategory existing = getCategoryById(id);
         existing.setActive(false);
-        repo.save(existing);
+        skillCategoryRepository.save(existing);
+    }
+    
+    private void validateCategory(SkillCategory category) {
+        if (category.getCategoryName() == null || category.getCategoryName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Category name must not be empty");
+        }
     }
 }
