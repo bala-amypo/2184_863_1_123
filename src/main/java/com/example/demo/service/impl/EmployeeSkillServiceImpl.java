@@ -20,7 +20,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     private final EmployeeRepository employeeRepo;
     private final SkillRepository skillRepo;
 
-    public EmployeeSkillServiceImpl(EmployeeSkillRepository repo,EmployeeRepository employeeRepo,SkillRepository skillRepo) {
+    public EmployeeSkillServiceImpl(EmployeeSkillRepository repo, EmployeeRepository employeeRepo, SkillRepository skillRepo) {
         this.repo = repo;
         this.employeeRepo = employeeRepo;
         this.skillRepo = skillRepo;
@@ -33,7 +33,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
-        validateMapping(mapping);
+        validateMapping(mapping);   // validates and fetches full employee & skill
         mapping.setActive(true);
         return repo.save(mapping);
     }
@@ -69,25 +69,38 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         return repo.findBySkillIdAndActiveTrue(skillId);
     }
 
+    /**
+     * Validates the EmployeeSkill mapping and fetches full Employee and Skill from DB
+     */
     private void validateMapping(EmployeeSkill mapping) {
-        Employee employee = mapping.getEmployee();
-        Skill skill = mapping.getSkill();
+        // Validate and fetch employee
+        Long employeeId = mapping.getEmployee().getId();
+        Employee employee = employeeRepo.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+        if (!employee.getActive()) {
+            throw new IllegalArgumentException("Cannot create mapping for inactive employee");
+        }
+        mapping.setEmployee(employee);
 
+        // Validate and fetch skill
+        Long skillId = mapping.getSkill().getId();
+        Skill skill = skillRepo.findById(skillId)
+                .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
+        if (!skill.getActive()) {
+            throw new IllegalArgumentException("Cannot create mapping for inactive skill");
+        }
+        mapping.setSkill(skill);
+
+        // Validate years of experience
         if (mapping.getYearsOfExperience() != null && mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years must be non-negative");
         }
 
+        // Validate proficiency level
         if (mapping.getProficiencyLevel() == null ||
-                !Set.of("Beginner", "Intermediate", "Advanced", "Expert").contains(mapping.getProficiencyLevel())) {
+                !Set.of("Beginner", "Intermediate", "Advanced", "Expert")
+                        .contains(mapping.getProficiencyLevel())) {
             throw new IllegalArgumentException("Invalid proficiency level");
-        }
-
-        if (employee == null || employee.getActive() != null && !employee.getActive()) {
-            throw new IllegalArgumentException("Cannot create mapping for inactive employee");
-        }
-
-        if (skill == null || skill.getActive() != null && !skill.getActive()) {
-            throw new IllegalArgumentException("Cannot create mapping for inactive skill");
         }
     }
 }
